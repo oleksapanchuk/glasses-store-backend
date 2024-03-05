@@ -1,6 +1,6 @@
 package com.oleksa.ecommerce.config;
 
-import com.okta.spring.boot.oauth.Okta;
+//import com.okta.spring.boot.oauth.Okta;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -10,7 +10,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.accept.ContentNegotiationStrategy;
 import org.springframework.web.accept.HeaderContentNegotiationStrategy;
 
-@Configuration
+//@Configuration
 public class SecurityConfiguration {
 
     @Bean
@@ -30,7 +30,7 @@ public class SecurityConfiguration {
         http.setSharedObject(ContentNegotiationStrategy.class, new HeaderContentNegotiationStrategy());
 
         // + non-empty response body for 401 (more friendly)
-        Okta.configureResourceServer401ResponseBody(http);
+//        Okta.configureResourceServer401ResponseBody(http);
 
         // we are not using Cookies for session tracking >> disable CSRF
         http.csrf(AbstractHttpConfigurer::disable);

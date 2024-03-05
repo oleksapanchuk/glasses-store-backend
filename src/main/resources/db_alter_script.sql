@@ -30,6 +30,8 @@ CREATE TABLE `product_has_category` (
   CONSTRAINT `product_category_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `product_categories` (`category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+ALTER TABLE users ADD user_role VARCHAR(60);
+
 
 
     

@@ -1,10 +1,10 @@
 package com.oleksa.ecommerce.service.impl;
 
-import com.oleksa.ecommerce.repository.CustomerRepository;
+import com.oleksa.ecommerce.repository.UserRepository;
 import com.oleksa.ecommerce.dto.PaymentInfo;
 import com.oleksa.ecommerce.dto.Purchase;
 import com.oleksa.ecommerce.dto.PurchaseResponse;
-import com.oleksa.ecommerce.entity.Users;
+import com.oleksa.ecommerce.entity.User;
 import com.oleksa.ecommerce.entity.Order;
 import com.oleksa.ecommerce.entity.OrderItem;
 import com.oleksa.ecommerce.service.CheckoutService;
@@ -23,11 +23,11 @@ import java.util.*;
 @Log4j2
 public class CheckoutServiceImpl implements CheckoutService {
 
-    private final CustomerRepository customerRepository;
+    private final UserRepository customerRepository;
 
     @Autowired
     public CheckoutServiceImpl(
-            CustomerRepository customerRepository,
+            UserRepository customerRepository,
             @Value("${stripe.keys.secret}") String secretKey
     ) {
         this.customerRepository = customerRepository;
@@ -55,11 +55,11 @@ public class CheckoutServiceImpl implements CheckoutService {
         order.setShippingAddress(purchase.getShippingAddress());
 
         // populate users with order
-        Users users = purchase.getUsers();
+        User users = purchase.getUsers();
 
         // check if this is an existing users
         String theEmail = users.getEmail();
-        Users usersFromDB = customerRepository.findByEmail(theEmail);
+        User usersFromDB = customerRepository.findByEmail(theEmail).orElseThrow();
 
         if (usersFromDB != null) {
             // we found them ... let's assign them accordingly
