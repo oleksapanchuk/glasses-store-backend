@@ -1,5 +1,6 @@
 package com.oleksa.ecommerce.security;
 
+import com.oleksa.ecommerce.exception.TokenExpiredException;
 import com.oleksa.ecommerce.service.JwtService;
 import com.oleksa.ecommerce.service.UserService;
 import jakarta.servlet.FilterChain;

@@ -2,6 +2,7 @@ package com.oleksa.ecommerce.service.impl;
 
 
 import com.oleksa.ecommerce.entity.User;
+import com.oleksa.ecommerce.exception.TokenExpiredException;
 import com.oleksa.ecommerce.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -24,8 +25,10 @@ public class JwtServiceImpl implements JwtService {
     @Value("${token.signing.key}")
     private String jwtSigningKey;
 
-    private static final long ACCESS_EXPIRE_TIME = System.currentTimeMillis() + 24 * 60 * 1000; // 24 hours
-    private static final long REFRESH_EXPIRE_TIME = System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000; // 7 days
+    private static final long ACCESS_EXPIRE_TIME = 30 * 1000; // 1 minute
+//    private static final long ACCESS_EXPIRE_TIME = System.currentTimeMillis() + 30 * 60 * 1000; // 30 minutes
+//    private static final long REFRESH_EXPIRE_TIME = System.currentTimeMillis() + 604800000; // 7 days
+    private static final long REFRESH_EXPIRE_TIME = 10 * 60 * 1000; // 7 days
 
 
     /**
@@ -63,7 +66,7 @@ public class JwtServiceImpl implements JwtService {
      */
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String userName = extractUserName(token);
-        return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
+        return (userName.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
     /**
@@ -89,7 +92,7 @@ public class JwtServiceImpl implements JwtService {
     private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails, boolean isRefresh) {
         return Jwts.builder().claims(extraClaims).subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(isRefresh ? REFRESH_EXPIRE_TIME : ACCESS_EXPIRE_TIME))
+                .expiration(new Date(System.currentTimeMillis() + (isRefresh ? REFRESH_EXPIRE_TIME : ACCESS_EXPIRE_TIME)))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
     }
 
@@ -100,7 +103,7 @@ public class JwtServiceImpl implements JwtService {
      * @return true if the token is expired
      */
     private boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+        return extractExpiration(token).before(new Date(System.currentTimeMillis()));
     }
 
     /**

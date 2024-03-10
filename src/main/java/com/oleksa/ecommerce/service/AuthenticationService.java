@@ -4,6 +4,7 @@ import com.oleksa.ecommerce.dto.JwtAuthenticationResponse;
 import com.oleksa.ecommerce.dto.SignInRequest;
 import com.oleksa.ecommerce.dto.SignUpRequest;
 import com.oleksa.ecommerce.dto.TokenRefreshRequest;
+import com.oleksa.ecommerce.exception.TokenExpiredException;
 
 public interface AuthenticationService {
 
@@ -12,6 +13,4 @@ public interface AuthenticationService {
     JwtAuthenticationResponse signIn(SignInRequest request);
 
     JwtAuthenticationResponse refreshToken(TokenRefreshRequest request);
-
-    JwtAuthenticationResponse accessToken(TokenRefreshRequest request);
 }
