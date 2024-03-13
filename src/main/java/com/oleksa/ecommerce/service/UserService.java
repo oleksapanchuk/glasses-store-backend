@@ -2,13 +2,18 @@ package com.oleksa.ecommerce.service;
 
 import com.oleksa.ecommerce.dto.UserDto;
 import com.oleksa.ecommerce.entity.User;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.Optional;
 
 public interface UserService {
 
-   Optional<UserDto>  getUserById(Long id);
+    Optional<UserDto> getUserById(Long id);
+
+    boolean updateUser(String username, UserDto user);
+
+    boolean updatePassword(String username, String oldPassword, String newPassword);
 
     User save(User user);
 

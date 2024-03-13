@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -21,6 +22,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * Getting user by ID
@@ -35,6 +37,33 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                         .map(UsersMapper::mapToUsersDto)
                         .orElseThrow(() -> new UsernameNotFoundException("User is not found"))
         );
+    }
+
+    @Override
+    public boolean updateUser(String username, UserDto userDto) {
+        User user = repository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setPhoneNumber(userDto.getPhoneNumber());
+
+        repository.save(user);
+
+        return true;
+    }
+
+    @Override
+    public boolean updatePassword(String username, String oldPassword, String newPassword) {
+        User user = repository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        if (passwordEncoder.matches(oldPassword, user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+            repository.save(user);
+            return true;
+        }
+        return false;
     }
 
     /**

@@ -10,8 +10,12 @@ public class UsersMapper {
                 .id(user.getId())
                 .email(user.getEmail())
                 .username(user.getUsername())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .phoneNumber(user.getPhoneNumber())
+                .subscribed(user.isSubscribed())
+                .verified(user.isVerified())
                 .role(user.getRole().name())
-                .imageUrl(user.getImageUrl())
                 .build();
     }
 
@@ -20,8 +24,12 @@ public class UsersMapper {
                 .id(userDto.getId())
                 .email(userDto.getEmail())
                 .username(userDto.getUsername())
+                .firstName(userDto.getFirstName())
+                .lastName(userDto.getLastName())
+                .phoneNumber(userDto.getPhoneNumber())
+                .subscribed(userDto.isSubscribed())
+                .verified(userDto.isVerified())
 //                .role(userDto.getRole())
-                .imageUrl(userDto.getImageUrl())
                 .build();
     }
 

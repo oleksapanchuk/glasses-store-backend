@@ -1,6 +1,8 @@
 package com.oleksa.ecommerce.controller;
 
+import com.oleksa.ecommerce.dto.ProductDto;
 import com.oleksa.ecommerce.entity.Product;
+import com.oleksa.ecommerce.mapper.ProductMapper;
 import com.oleksa.ecommerce.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -77,4 +79,16 @@ public class ProductController {
                 .status(HttpStatus.OK)
                 .body(productsList);
     }
+
+    @PostMapping
+    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
+
+        Product product = productService.saveProduct(productDto)
+                .orElseThrow();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ProductMapper.mapToProductDto(product));
+    }
+
 }

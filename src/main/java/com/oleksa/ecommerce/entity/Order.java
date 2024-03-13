@@ -1,17 +1,19 @@
 package com.oleksa.ecommerce.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "orders")
+@Builder
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "orders")
 public class Order {
 
     @Id
@@ -59,3 +61,5 @@ public class Order {
     }
 
 }
+
+

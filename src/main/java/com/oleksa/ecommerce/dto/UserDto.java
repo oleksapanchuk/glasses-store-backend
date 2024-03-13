@@ -24,8 +24,20 @@ public class UserDto {
     @Schema(description = "The unique email of the user")
     private String email;
 
-    @Schema(description = "The image URL of the user")
-    private String imageUrl;
+    @Schema(description = "The first name of the user")
+    private String firstName;
+
+    @Schema(description = "The last name of the user")
+    private String lastName;
+
+    @Schema(description = "The phone number of the user")
+    private String phoneNumber;
+
+    @Schema(description = "Indicates whether the user is subscribed to mail")
+    private boolean subscribed;
+
+    @Schema(description = "Indicates whether the user is verified")
+    private boolean verified;
 
     @NotNull(message = "Role is mandatory")
     @Schema(description = "The role of the user")

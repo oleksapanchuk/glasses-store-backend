@@ -1,10 +1,11 @@
-package com.oleksa.ecommerce.dto;
+package com.oleksa.ecommerce.dto.request;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class PaymentInfo {
-
+@Builder
+public class PaymentInfoRequest {
     private int amount;
     private String currency;
     private String receiptEmail;

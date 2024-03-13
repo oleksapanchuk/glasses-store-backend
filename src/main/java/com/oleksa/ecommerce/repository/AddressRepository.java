@@ -1,14 +1,12 @@
 package com.oleksa.ecommerce.repository;
 
-
-import com.oleksa.ecommerce.entity.Country;
+import com.oleksa.ecommerce.entity.Address;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-
 @Repository
-public interface CountryRepository extends JpaRepository<Country, Long> {
-    Optional<Country> findById(Long id);
+public interface AddressRepository extends JpaRepository<Address, Long> {
+    Optional<Address> findById(Long id);
 }

@@ -13,7 +13,7 @@ public class State {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "state_id")
-    private int id;
+    private Long id;
 
     @Column(name = "state_name")
     private String name;

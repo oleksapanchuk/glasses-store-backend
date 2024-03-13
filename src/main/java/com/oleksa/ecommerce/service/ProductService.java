@@ -1,5 +1,6 @@
 package com.oleksa.ecommerce.service;
 
+import com.oleksa.ecommerce.dto.ProductDto;
 import com.oleksa.ecommerce.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,4 +18,7 @@ public interface ProductService {
 
     Optional<Page<Product>> getProductsByCategoriesAndPriceRange(double minPrice, double maxPrice, List<Long> categoryIds,  String sortingOrder, String sortingField, Pageable pageable);
 
+    Optional<Product> saveProduct(ProductDto productDto);
+    Optional<Product> updateProduct(ProductDto productDto);
+    boolean deleteProduct(ProductDto productDto);
 }

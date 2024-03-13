@@ -30,14 +30,26 @@ public class User implements UserDetails {
     @Column(name = "user_username", unique = true, nullable = false)
     private String username;
 
-    @Column(name = "user_password", nullable = false)
-    private String password;
-
     @Column(name = "user_email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "user_image_url")
-    private String imageUrl;
+    @Column(name = "user_password", nullable = false)
+    private String password;
+
+    @Column(name = "first_name", length = 30)
+    private String firstName;
+
+    @Column(name = "last_name", length = 30)
+    private String lastName;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "is_subscribed")
+    private boolean subscribed;
+
+    @Column(name = "is_verified")
+    private boolean verified;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "user_role")

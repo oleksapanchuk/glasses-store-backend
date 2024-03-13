@@ -1,17 +1,17 @@
 package com.oleksa.ecommerce.controller;
 
 import com.oleksa.ecommerce.dto.UserDto;
-import com.oleksa.ecommerce.entity.Product;
-import com.oleksa.ecommerce.service.AuthenticationService;
+import com.oleksa.ecommerce.dto.request.PasswordUpdateRequest;
 import com.oleksa.ecommerce.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
 
 @RestController
 @RequestMapping("/api/users")
@@ -33,4 +33,34 @@ public class UserController {
                 .status(HttpStatus.OK)
                 .body(user);
     }
+
+    @PatchMapping("/update")
+    public ResponseEntity<?> updateUser(@RequestBody UserDto user) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        boolean isUpdated = userService.updateUser(username, user);
+        return isUpdated
+                ?
+                new ResponseEntity<>(Collections.singletonMap("message", "User data is updated successfully"), HttpStatus.OK)
+                :
+                new ResponseEntity<>(Collections.singletonMap("message", "Failed to update user data"), HttpStatus.BAD_REQUEST);
+    }
+
+    @PutMapping("/update-password")
+    public ResponseEntity<?> updatePassword(
+            @RequestBody PasswordUpdateRequest passwordRequest
+    ) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        boolean isUpdated = userService.updatePassword(username, passwordRequest.getOldPassword(), passwordRequest.getNewPassword());
+        if (isUpdated) {
+            return new ResponseEntity<>(Collections.singletonMap("message", "Password updated successfully"), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(Collections.singletonMap("message", "Failed to update password"), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
 }

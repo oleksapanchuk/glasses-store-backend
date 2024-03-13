@@ -1,12 +1,15 @@
 package com.oleksa.ecommerce.service.impl;
 
+import com.oleksa.ecommerce.mapper.AddressMapper;
+import com.oleksa.ecommerce.mapper.OrderMapper;
 import com.oleksa.ecommerce.repository.UserRepository;
-import com.oleksa.ecommerce.dto.PaymentInfo;
-import com.oleksa.ecommerce.dto.Purchase;
+import com.oleksa.ecommerce.dto.request.PaymentInfoRequest;
+import com.oleksa.ecommerce.dto.request.PurchaseRequest;
 import com.oleksa.ecommerce.dto.PurchaseResponse;
 import com.oleksa.ecommerce.entity.User;
 import com.oleksa.ecommerce.entity.Order;
 import com.oleksa.ecommerce.entity.OrderItem;
+import com.oleksa.ecommerce.service.AddressService;
 import com.oleksa.ecommerce.service.CheckoutService;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
@@ -15,22 +18,26 @@ import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-@Service
 @Log4j2
+@Service
 public class CheckoutServiceImpl implements CheckoutService {
 
-    private final UserRepository customerRepository;
+    private final UserRepository userRepository;
+    private final AddressService addressService;
 
     @Autowired
     public CheckoutServiceImpl(
             UserRepository customerRepository,
+            AddressService addressService,
             @Value("${stripe.keys.secret}") String secretKey
     ) {
-        this.customerRepository = customerRepository;
+        this.addressService = addressService;
+        this.userRepository = customerRepository;
 
         // initialize Stripe API with secret key
         Stripe.apiKey = secretKey;
@@ -38,10 +45,10 @@ public class CheckoutServiceImpl implements CheckoutService {
 
     @Override
     @Transactional
-    public PurchaseResponse placeOrder(Purchase purchase) {
+    public PurchaseResponse placeOrder(String username, PurchaseRequest purchase) {
 
         // retrieve the order info from dto
-        Order order = purchase.getOrder();
+        Order order = OrderMapper.mapToOrder(purchase.getOrder());
 
         // generate tracking number
         String orderTrackingNumber = generateOrderTrackingNumber();
@@ -52,31 +59,23 @@ public class CheckoutServiceImpl implements CheckoutService {
         orderItems.forEach(order::add);
 
         // populate order with billingAddress and shippingAddress
-        order.setShippingAddress(purchase.getShippingAddress());
-
-        // populate users with order
-        User users = purchase.getUsers();
+        order.setShippingAddress(new AddressMapper(addressService).mapToAddress(purchase.getShippingAddress()));
 
         // check if this is an existing users
-        String theEmail = users.getEmail();
-        User usersFromDB = customerRepository.findByEmail(theEmail).orElseThrow();
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        if (usersFromDB != null) {
-            // we found them ... let's assign them accordingly
-            users = usersFromDB;
-        }
-
-        users.add(order);
+        user.add(order);
 
         // save to the database
-        customerRepository.save(users);
+        userRepository.save(user);
 
         // return a response
         return new PurchaseResponse(orderTrackingNumber);
     }
 
     @Override
-    public PaymentIntent createPaymentIntent(PaymentInfo paymentInfo) throws StripeException {
+    public PaymentIntent createPaymentIntent(PaymentInfoRequest paymentInfo) throws StripeException {
 
         List<String> paymentMethodTypes = List.of("card");
 
@@ -99,3 +98,4 @@ public class CheckoutServiceImpl implements CheckoutService {
     }
 
 }
+

@@ -1,5 +1,6 @@
 package com.oleksa.ecommerce.service.impl;
 
+import com.oleksa.ecommerce.dto.ProductDto;
 import com.oleksa.ecommerce.entity.Product;
 import com.oleksa.ecommerce.entity.add.SortingOrder;
 import com.oleksa.ecommerce.repository.ProductRepository;
@@ -71,5 +72,20 @@ public class ProductServiceImpl implements ProductService {
                 idList.size(),
                 PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(order, "p." + sortingField))
         ));
+    }
+
+    @Override
+    public Optional<Product> saveProduct(ProductDto productDto) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Product> updateProduct(ProductDto productDto) {
+        return Optional.empty();
+    }
+
+    @Override
+    public boolean deleteProduct(ProductDto productDto) {
+        return false;
     }
 }

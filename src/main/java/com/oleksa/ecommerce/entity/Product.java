@@ -1,8 +1,7 @@
 package com.oleksa.ecommerce.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -10,9 +9,12 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "products")
+@Builder
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "products")
 public class Product {
 
     @Id
