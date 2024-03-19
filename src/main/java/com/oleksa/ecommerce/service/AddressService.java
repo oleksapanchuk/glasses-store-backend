@@ -1,14 +1,13 @@
 package com.oleksa.ecommerce.service;
 
-import com.oleksa.ecommerce.entity.Address;
-import com.oleksa.ecommerce.entity.Country;
-import com.oleksa.ecommerce.entity.State;
-
-import java.util.Optional;
+import com.oleksa.ecommerce.dto.AddressDto;
 
 public interface AddressService {
-    Optional<Address> getAddressById(Long id);
-    Optional<State> getStateById(Long id);
-    Optional<Country> getCountryById(Long id);
+    void createAddress(String username, AddressDto addressDto);
 
+    AddressDto fetchAddress(String username, Long addressId);
+
+    boolean updateAddress(String username, AddressDto addressDto);
+
+    boolean deleteAddress(String username, Long addressId);
 }

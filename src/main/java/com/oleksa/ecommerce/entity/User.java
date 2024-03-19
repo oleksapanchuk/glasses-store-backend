@@ -56,6 +56,9 @@ public class User implements UserDetails {
     private Role role;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private Set<Address> addresses = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Set<Order> orders = new HashSet<>();
 
     public void add(Order order) {

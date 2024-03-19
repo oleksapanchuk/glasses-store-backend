@@ -1,14 +1,14 @@
 package com.oleksa.ecommerce.service.impl;
 
+import com.oleksa.ecommerce.dto.PurchaseResponse;
+import com.oleksa.ecommerce.dto.request.PaymentInfoRequest;
+import com.oleksa.ecommerce.dto.request.PurchaseRequest;
+import com.oleksa.ecommerce.entity.Order;
+import com.oleksa.ecommerce.entity.OrderItem;
+import com.oleksa.ecommerce.entity.User;
 import com.oleksa.ecommerce.mapper.AddressMapper;
 import com.oleksa.ecommerce.mapper.OrderMapper;
 import com.oleksa.ecommerce.repository.UserRepository;
-import com.oleksa.ecommerce.dto.request.PaymentInfoRequest;
-import com.oleksa.ecommerce.dto.request.PurchaseRequest;
-import com.oleksa.ecommerce.dto.PurchaseResponse;
-import com.oleksa.ecommerce.entity.User;
-import com.oleksa.ecommerce.entity.Order;
-import com.oleksa.ecommerce.entity.OrderItem;
 import com.oleksa.ecommerce.service.AddressService;
 import com.oleksa.ecommerce.service.CheckoutService;
 import com.stripe.Stripe;
@@ -59,7 +59,7 @@ public class CheckoutServiceImpl implements CheckoutService {
         orderItems.forEach(order::add);
 
         // populate order with billingAddress and shippingAddress
-        order.setShippingAddress(new AddressMapper(addressService).mapToAddress(purchase.getShippingAddress()));
+        order.setShippingAddress(AddressMapper.mapToAddress(purchase.getShippingAddress()));
 
         // check if this is an existing users
         User user = userRepository.findByUsername(username)

@@ -50,7 +50,7 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Page<Product>> fetchProductPage(
+    public ResponseEntity<Page<Product>> searchProducts(
             @RequestParam(name = "search-text") String searchText,
             Pageable pageable
     ) {
@@ -64,7 +64,7 @@ public class ProductController {
     }
 
     @GetMapping("/paginable-list/filters")
-    public ResponseEntity<Page<Product>> fetchProductPage(
+    public ResponseEntity<Page<Product>> fetchProductsWithFilters(
             @RequestParam double minPrice,
             @RequestParam double maxPrice,
             @RequestParam List<Long> categoryIds,

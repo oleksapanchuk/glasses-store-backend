@@ -23,16 +23,18 @@ public class Address {
     @Column(name = "city")
     private String city;
 
-    @ManyToOne
-    @JoinColumn(name = "state_id", nullable = false)
-    private State state;
+    @Column(name = "state")
+    private String state;
 
-    @ManyToOne
-    @JoinColumn(name = "country_id", nullable = false)
-    private Country country;
+    @Column(name = "country")
+    private String country;
 
     @Column(name = "zip_code")
     private String zipCode;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @OneToOne
     @PrimaryKeyJoinColumn
