@@ -3,6 +3,8 @@ package com.oleksa.ecommerce.service.impl;
 import com.oleksa.ecommerce.dto.ProductDto;
 import com.oleksa.ecommerce.entity.Product;
 import com.oleksa.ecommerce.entity.add.SortingOrder;
+import com.oleksa.ecommerce.exception.ResourceNotFoundException;
+import com.oleksa.ecommerce.mapper.ProductMapper;
 import com.oleksa.ecommerce.repository.ProductRepository;
 import com.oleksa.ecommerce.service.ProductService;
 import lombok.AllArgsConstructor;
@@ -14,37 +16,69 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @AllArgsConstructor
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductRepository productRepository;
+    private final ProductRepository repository;
 
     @Override
-    public Optional<Product> getProduct(Long productId) {
-        return productRepository.findById(productId);
+    public void createProduct(ProductDto productDto) {
+
+        Product product = ProductMapper.mapToProduct(new Product(), productDto);
+
+        repository.save(product);
     }
 
     @Override
-    public Optional<Page<Product>> getPaginableList(Pageable pageable) {
+    public ProductDto fetchProduct(Long productId) {
 
-        return Optional.of(productRepository.findAll(pageable));
+        Product product = repository.findById(productId).orElseThrow(
+                () -> new ResourceNotFoundException("Product", "productId", productId)
+        );
 
+        return ProductMapper.mapToProductDto(product);
     }
 
     @Override
-    public Optional<Page<Product>> getPaginableListByNameContaining(String text, Pageable pageable) {
+    public boolean updateProduct(ProductDto productDto) {
 
-        System.out.println("search text: " + text);
+        Product product = repository.findById(productDto.getId()).orElseThrow(
+                () -> new ResourceNotFoundException("Product", "productId", productDto.getId())
+        );
 
-        return Optional.of(productRepository.findByNameContaining(text, pageable));
+        repository.save(ProductMapper.mapToProduct(product, productDto));
 
+        return true;
     }
 
     @Override
-    public Optional<Page<Product>> getProductsByCategoriesAndPriceRange(double minPrice, double maxPrice, List<Long> categoryIds, String sortingOrder, String sortingField, Pageable pageable) {
+    public boolean deactivateProduct(Long productId) {
+
+        Product product = repository.findById(productId).orElseThrow(
+                () -> new ResourceNotFoundException("Product", "productId", productId)
+        );
+
+        product.setActive(false);
+
+        repository.save(product);
+
+        return true;
+    }
+
+    @Override
+    public Page<Product> getPaginableList(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Product> getPaginableListByNameContaining(String text, Pageable pageable) {
+        return repository.findByNameContaining(text, pageable);
+    }
+
+    @Override
+    public Page<Product> getProductsByCategoriesAndPriceRange(double minPrice, double maxPrice, List<Long> categoryIds, String sortingOrder, String sortingField, Pageable pageable) {
 
         var order = Sort.Direction.ASC;
         if (sortingOrder.trim().equals(SortingOrder.DESC.label)) {
@@ -59,33 +93,19 @@ public class ProductServiceImpl implements ProductService {
         }
 
         if (idList.isEmpty()) {
-            return Optional.of(productRepository.findProductsByPriceRange(
+            return repository.findProductsByPriceRange(
                     minPrice,
                     maxPrice,
-                    PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(order, sortingField))));
+                    PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(order, sortingField)));
         }
 
-        return Optional.of(productRepository.findProductsByCategoriesAndPriceRange(
+        return repository.findProductsByCategoriesAndPriceRange(
                 minPrice,
                 maxPrice,
                 idList,
                 idList.size(),
                 PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(order, "p." + sortingField))
-        ));
+        );
     }
 
-    @Override
-    public Optional<Product> saveProduct(ProductDto productDto) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Product> updateProduct(ProductDto productDto) {
-        return Optional.empty();
-    }
-
-    @Override
-    public boolean deleteProduct(ProductDto productDto) {
-        return false;
-    }
 }

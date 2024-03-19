@@ -6,19 +6,21 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ProductService {
 
-    Optional<Product> getProduct(Long productId);
+    void createProduct(ProductDto productDto);
 
-    Optional<Page<Product>> getPaginableList(Pageable pageable);
+    ProductDto fetchProduct(Long productId);
 
-    Optional<Page<Product>> getPaginableListByNameContaining(String text, Pageable pageable);
+    boolean updateProduct(ProductDto productDto);
 
-    Optional<Page<Product>> getProductsByCategoriesAndPriceRange(double minPrice, double maxPrice, List<Long> categoryIds,  String sortingOrder, String sortingField, Pageable pageable);
+    boolean deactivateProduct(Long productId);
 
-    Optional<Product> saveProduct(ProductDto productDto);
-    Optional<Product> updateProduct(ProductDto productDto);
-    boolean deleteProduct(ProductDto productDto);
+    Page<Product> getPaginableList(Pageable pageable);
+
+    Page<Product> getPaginableListByNameContaining(String text, Pageable pageable);
+
+    Page<Product> getProductsByCategoriesAndPriceRange(double minPrice, double maxPrice, List<Long> categoryIds, String sortingOrder, String sortingField, Pageable pageable);
+
 }

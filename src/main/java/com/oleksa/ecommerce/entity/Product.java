@@ -34,9 +34,6 @@ public class Product {
     @Column(name = "product_price")
     private Double price;
 
-    @Column(name = "product_rating")
-    private Double rating;
-
     @Column(name = "product_image_url")
     private String imageUrl;
 

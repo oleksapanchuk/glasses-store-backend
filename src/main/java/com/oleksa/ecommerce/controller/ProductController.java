@@ -1,9 +1,11 @@
 package com.oleksa.ecommerce.controller;
 
+import com.oleksa.ecommerce.constants.AppConstants;
 import com.oleksa.ecommerce.dto.ProductDto;
+import com.oleksa.ecommerce.dto.ResponseDto;
 import com.oleksa.ecommerce.entity.Product;
-import com.oleksa.ecommerce.mapper.ProductMapper;
 import com.oleksa.ecommerce.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,26 +25,70 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping("/{product-id}")
-    public ResponseEntity<Product> getProduct(
+    @PostMapping("/create")
+    public ResponseEntity<ResponseDto> createProduct(
+            @Valid @RequestBody ProductDto productDto
+    ) {
+        productService.createProduct(productDto);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new ResponseDto(AppConstants.STATUS_201, "Product" + AppConstants.MESSAGE_201));
+    }
+
+    @GetMapping("/fetch/{product-id}")
+    public ResponseEntity<ProductDto> fetchProduct(
             @PathVariable(name = "product-id") Long productId
     ) {
 
-        Product product = productService.getProduct(productId)
-                .orElseThrow(() -> new RuntimeException("error on product fetching"));
+        ProductDto productDto = productService.fetchProduct(productId);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(product);
+                .body(productDto);
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<ResponseDto> updateProduct(
+            @Valid @RequestBody ProductDto productDto
+    ) {
+        boolean isUpdated = productService.updateProduct(productDto);
+
+        if (isUpdated) {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new ResponseDto(AppConstants.STATUS_200, AppConstants.MESSAGE_200));
+        } else {
+            return ResponseEntity
+                    .status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new ResponseDto(AppConstants.STATUS_417, AppConstants.MESSAGE_417_UPDATE));
+        }
+    }
+
+    @PatchMapping("/deactivate/{product-id}")
+    public ResponseEntity<ResponseDto> deactivateProduct(
+            @PathVariable(name = "product-id") Long productId
+    ) {
+        boolean isDeleted = productService.deactivateProduct(productId);
+
+        if (isDeleted) {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new ResponseDto(AppConstants.STATUS_200, AppConstants.MESSAGE_200));
+        } else {
+            return ResponseEntity
+                    .status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new ResponseDto(AppConstants.STATUS_417, AppConstants.MESSAGE_417_DELETE));
+        }
+    }
+
 
     @GetMapping("/paginable-list")
     public ResponseEntity<Page<Product>> fetchProductPage(
             Pageable pageable
     ) {
 
-        Page<Product> productsList = productService.getPaginableList(pageable)
-                .orElseThrow(() -> new RuntimeException("error on product fetching"));
+        Page<Product> productsList = productService.getPaginableList(pageable);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -55,8 +101,7 @@ public class ProductController {
             Pageable pageable
     ) {
 
-        Page<Product> productsList = productService.getPaginableListByNameContaining(searchText, pageable)
-                .orElseThrow(() -> new RuntimeException("error on product fetching"));
+        Page<Product> productsList = productService.getPaginableListByNameContaining(searchText, pageable);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -72,23 +117,11 @@ public class ProductController {
             @RequestParam(name = "sorting-method") String sortingMethod,
             Pageable pageable) {
 
-        Page<Product> productsList = productService.getProductsByCategoriesAndPriceRange(minPrice, maxPrice, categoryIds, sortingOrder, sortingMethod, pageable)
-                .orElseThrow(() -> new RuntimeException("error on product fetching"));
+        Page<Product> productsList = productService.getProductsByCategoriesAndPriceRange(minPrice, maxPrice, categoryIds, sortingOrder, sortingMethod, pageable);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(productsList);
-    }
-
-    @PostMapping
-    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
-
-        Product product = productService.saveProduct(productDto)
-                .orElseThrow();
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(ProductMapper.mapToProductDto(product));
     }
 
 }

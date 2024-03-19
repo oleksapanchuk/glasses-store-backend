@@ -23,7 +23,7 @@ public class AddressController {
     private final AddressService addressService;
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseDto> createAccount(
+    public ResponseEntity<ResponseDto> createAddress(
             @Valid @RequestBody AddressDto addressDto
     ) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -51,7 +51,7 @@ public class AddressController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ResponseDto> updateAccountDetails(
+    public ResponseEntity<ResponseDto> updateAddress(
             @Valid @RequestBody AddressDto addressDto
     ) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -71,7 +71,7 @@ public class AddressController {
     }
 
     @DeleteMapping("/delete/{address-id}")
-    public ResponseEntity<ResponseDto> deleteAccount(
+    public ResponseEntity<ResponseDto> deleteAddress(
             @PathVariable(name = "address-id") Long addressId
     ) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
