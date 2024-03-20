@@ -24,11 +24,8 @@ public class JwtServiceImpl implements JwtService {
 
     @Value("${token.signing.key}")
     private String jwtSigningKey;
-
-//    private static final long ACCESS_EXPIRE_TIME = 30 * 1000; // 1 minute
     private static final long ACCESS_EXPIRE_TIME = 30 * 60 * 1000; // 30 minutes
     private static final long REFRESH_EXPIRE_TIME = 604_800_000; // 7 days
-//    private static final long REFRESH_EXPIRE_TIME = 10 * 60 * 1000; // 7 days
 
 
     /**

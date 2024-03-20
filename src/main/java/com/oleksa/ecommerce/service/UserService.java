@@ -2,7 +2,6 @@ package com.oleksa.ecommerce.service;
 
 import com.oleksa.ecommerce.dto.UserDto;
 import com.oleksa.ecommerce.entity.User;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.Optional;
@@ -26,4 +25,6 @@ public interface UserService {
     User getCurrentUser();
 
     void getAdmin();
+
+    boolean confirmUserAccount(String token);
 }

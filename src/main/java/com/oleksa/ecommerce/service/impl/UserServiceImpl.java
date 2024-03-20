@@ -3,11 +3,14 @@ package com.oleksa.ecommerce.service.impl;
 import com.oleksa.ecommerce.dto.UserDto;
 import com.oleksa.ecommerce.entity.Role;
 import com.oleksa.ecommerce.entity.User;
+import com.oleksa.ecommerce.exception.ResourceNotFoundException;
 import com.oleksa.ecommerce.exception.UserAlreadyExistException;
 import com.oleksa.ecommerce.mapper.UsersMapper;
 import com.oleksa.ecommerce.repository.UserRepository;
+import com.oleksa.ecommerce.service.JwtService;
 import com.oleksa.ecommerce.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,9 +22,11 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository repository;
+    private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
     /**
@@ -141,5 +146,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return repository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User with username " + username + " not found"));
 
+    }
+
+    public boolean confirmUserAccount(String token) {
+
+        String username = jwtService.extractUserName(token);
+        log.info("Username from token: {}", username);
+
+        User user = repository.findByUsername(username).orElseThrow(
+                () -> new ResourceNotFoundException("User", "username", username)
+        );
+
+        user.setVerified(true);
+        repository.save(user);
+        return true;
     }
 }
