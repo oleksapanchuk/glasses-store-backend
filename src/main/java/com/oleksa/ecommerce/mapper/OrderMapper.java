@@ -5,7 +5,7 @@ import com.oleksa.ecommerce.entity.Order;
 
 public class OrderMapper {
 
-    public static OrderDto mapToOrdersDto(Order order) {
+    public static OrderDto mapToOrderDto(Order order) {
         return OrderDto.builder()
                 .id(order.getId())
                 .orderTrackingNumber(order.getOrderTrackingNumber())

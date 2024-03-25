@@ -20,7 +20,7 @@ public class AddressServiceImpl implements AddressService {
     private final UserRepository userRepository;
 
     @Override
-    public void createAddress(String username, AddressDto addressDto) {
+    public AddressDto createAddress(String username, AddressDto addressDto) {
 
         Address address = AddressMapper.mapToAddress(addressDto);
 
@@ -31,6 +31,8 @@ public class AddressServiceImpl implements AddressService {
         address.setUser(user);
 
         addressRepository.save(address);
+
+        return AddressMapper.mapToAddressDto(address);
     }
 
     @Override

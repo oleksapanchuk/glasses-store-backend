@@ -33,8 +33,7 @@ public class UserController {
             @PathVariable(name = "user-id") Long userId
     ) {
 
-        UserDto user = userService.getUserById(userId)
-                .orElseThrow(() -> new RuntimeException("error on user fetching"));
+        UserDto user = userService.fetchUserById(userId);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

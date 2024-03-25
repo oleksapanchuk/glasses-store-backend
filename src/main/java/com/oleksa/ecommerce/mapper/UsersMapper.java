@@ -1,6 +1,7 @@
 package com.oleksa.ecommerce.mapper;
 
 import com.oleksa.ecommerce.dto.UserDto;
+import com.oleksa.ecommerce.entity.Role;
 import com.oleksa.ecommerce.entity.User;
 
 public class UsersMapper {
@@ -19,18 +20,17 @@ public class UsersMapper {
                 .build();
     }
 
-    public static User mapToUsers(UserDto userDto) {
-        return User.builder()
-                .id(userDto.getId())
-                .email(userDto.getEmail())
-                .username(userDto.getUsername())
-                .firstName(userDto.getFirstName())
-                .lastName(userDto.getLastName())
-                .phoneNumber(userDto.getPhoneNumber())
-                .subscribed(userDto.isSubscribed())
-                .verified(userDto.isVerified())
-//                .role(userDto.getRole())
-                .build();
+    public static User mapToUser(UserDto userDto, User user) {
+        user.setId(userDto.getId());
+        user.setEmail(userDto.getEmail());
+        user.setUsername(userDto.getUsername());
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setPhoneNumber(userDto.getPhoneNumber());
+        user.setSubscribed(userDto.isSubscribed());
+        user.setVerified(userDto.isVerified());
+        user.setRole(Role.valueOf(userDto.getRole()));
+        return user;
     }
 
 

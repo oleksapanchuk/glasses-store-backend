@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,14 +38,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      */
     public JwtAuthenticationResponse signUp(SignUpRequest request) {
 
-        var user = User.builder()
+        User user = User.builder()
                 .username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.ROLE_USER)
                 .build();
 
-        userService.create(user);
+        userService.createUser(user);
 
         var accessToken = jwtService.generateToken(user, false);
         var refreshToken = jwtService.generateToken(user, true);
@@ -72,6 +73,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var accessToken = jwtService.generateToken(user, false);
         var refreshToken = jwtService.generateToken(user, true);
         return new JwtAuthenticationResponse(accessToken, refreshToken);
+    }
+
+    @Override
+    public void signOut() {
+        SecurityContextHolder.clearContext();
     }
 
     /**

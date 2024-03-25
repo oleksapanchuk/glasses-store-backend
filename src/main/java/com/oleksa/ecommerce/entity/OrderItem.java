@@ -1,12 +1,17 @@
 package com.oleksa.ecommerce.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 
 @Entity
+@SuperBuilder
+@NoArgsConstructor
 @Table(name = "order_items")
 @Getter
 @Setter
@@ -29,4 +34,5 @@ public class OrderItem {
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
+
 }

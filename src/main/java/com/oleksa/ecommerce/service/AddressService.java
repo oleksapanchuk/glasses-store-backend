@@ -3,7 +3,7 @@ package com.oleksa.ecommerce.service;
 import com.oleksa.ecommerce.dto.AddressDto;
 
 public interface AddressService {
-    void createAddress(String username, AddressDto addressDto);
+    AddressDto createAddress(String username, AddressDto addressDto);
 
     AddressDto fetchAddress(String username, Long addressId);
 

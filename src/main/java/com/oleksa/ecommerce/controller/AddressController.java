@@ -26,6 +26,9 @@ public class AddressController {
     public ResponseEntity<ResponseDto> createAddress(
             @Valid @RequestBody AddressDto addressDto
     ) {
+
+        System.out.println("here");
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
 
