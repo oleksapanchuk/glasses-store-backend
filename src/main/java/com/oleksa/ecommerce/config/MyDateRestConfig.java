@@ -1,6 +1,8 @@
 package com.oleksa.ecommerce.config;
 
-import com.oleksa.ecommerce.entity.*;
+import com.oleksa.ecommerce.entity.Order;
+import com.oleksa.ecommerce.entity.Product;
+import com.oleksa.ecommerce.entity.ProductCategory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.metamodel.EntityType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +43,6 @@ public class MyDateRestConfig implements RepositoryRestConfigurer {
         // disable HTTP methods: PUT, POST, DELETE and PATCH
         disableHttpMethods(Product.class, config, unsupportedActions);
         disableHttpMethods(ProductCategory.class, config, unsupportedActions);
-        disableHttpMethods(Country.class, config, unsupportedActions);
-        disableHttpMethods(State.class, config, unsupportedActions);
         disableHttpMethods(Order.class, config, unsupportedActions);
 
         // call an internal helper method
