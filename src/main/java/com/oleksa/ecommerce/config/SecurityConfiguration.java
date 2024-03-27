@@ -1,8 +1,8 @@
 package com.oleksa.ecommerce.config;
 
 //import com.okta.spring.boot.oauth.Okta;
+
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -18,9 +18,9 @@ public class SecurityConfiguration {
 
         //protect endpoint /api/orders
         http.authorizeHttpRequests(requests -> requests
-                                .requestMatchers("/api/orders/**")
-                                .authenticated()
-                                .anyRequest().permitAll())
+                        .requestMatchers("/api/orders/**")
+                        .authenticated()
+                        .anyRequest().permitAll())
                 .oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer.jwt(Customizer.withDefaults()));
 
         // + CORS filters

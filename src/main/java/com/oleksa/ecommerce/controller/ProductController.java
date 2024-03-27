@@ -7,20 +7,21 @@ import com.oleksa.ecommerce.entity.Product;
 import com.oleksa.ecommerce.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping(path = "/api/products", produces = {MediaType.APPLICATION_JSON_VALUE})
-@AllArgsConstructor
+@Log4j2
 @Validated
+@AllArgsConstructor
+@RequestMapping("/api/products")
+@RestController
 public class ProductController {
 
     private final ProductService productService;
