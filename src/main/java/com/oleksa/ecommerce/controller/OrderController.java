@@ -95,7 +95,7 @@ public class OrderController {
                 .body(orderDto);
     }
 
-    @PostMapping("/payment-intent")
+    @PostMapping("/create-payment-intent")
     public ResponseEntity<String> createPaymentIntent(@RequestBody PaymentInfoRequest paymentInfo) throws StripeException {
 
         log.info("PaymentInfoRequest.amount: {}", paymentInfo.getAmount());
