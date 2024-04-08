@@ -17,7 +17,7 @@ public class OrderMapper {
 
     public static Order mapToOrder(OrderDto orderDto) {
         return Order.builder()
-                .id(orderDto.getId())
+//                .id(orderDto.getId())
                 .orderTrackingNumber(orderDto.getOrderTrackingNumber())
                 .totalQuantity(orderDto.getTotalQuantity())
                 .totalPrice(orderDto.getTotalPrice())

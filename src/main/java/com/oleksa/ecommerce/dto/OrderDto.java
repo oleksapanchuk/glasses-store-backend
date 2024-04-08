@@ -13,6 +13,7 @@ import java.util.Set;
 @Builder
 public class OrderDto {
     private Long id;
+    private Long userId;
     private String orderTrackingNumber;
     private Integer totalQuantity;
     private Integer totalPrice;

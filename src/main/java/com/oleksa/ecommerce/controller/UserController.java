@@ -40,6 +40,18 @@ public class UserController {
                 .body(user);
     }
 
+    @GetMapping("/by-username/{username}")
+    public ResponseEntity<UserDto> getByUsername(
+            @PathVariable String username
+    ) {
+
+        UserDto user = userService.fetchUserByUsername(username);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(user);
+    }
+
     @PatchMapping("/update")
     public ResponseEntity<?> updateUser(@RequestBody UserDto user) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
