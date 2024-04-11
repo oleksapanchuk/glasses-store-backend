@@ -70,7 +70,7 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = OrderMapper.mapToOrder(purchase.getOrder());
         order.setOrderTrackingNumber(generateOrderTrackingNumber());
-        order.setStatus(OrderStatus.CREATED.name());
+        order.setStatus(OrderStatus.ACCEPTED.name());
         Set<OrderItem> orderItems = purchase.getOrderItems();
         orderItems.forEach(order::add);
         Address shippingAddress = AddressMapper.mapToAddress(purchase.getShippingAddress());

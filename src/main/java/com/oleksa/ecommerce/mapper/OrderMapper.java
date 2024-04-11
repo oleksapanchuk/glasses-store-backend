@@ -12,12 +12,12 @@ public class OrderMapper {
                 .totalQuantity(order.getTotalQuantity())
                 .totalPrice(order.getTotalPrice())
                 .status(order.getStatus())
+                .dateCreated(order.getDateCreated())
                 .build();
     }
 
     public static Order mapToOrder(OrderDto orderDto) {
         return Order.builder()
-//                .id(orderDto.getId())
                 .orderTrackingNumber(orderDto.getOrderTrackingNumber())
                 .totalQuantity(orderDto.getTotalQuantity())
                 .totalPrice(orderDto.getTotalPrice())

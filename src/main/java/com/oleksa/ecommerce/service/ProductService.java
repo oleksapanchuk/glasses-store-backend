@@ -1,6 +1,7 @@
 package com.oleksa.ecommerce.service;
 
-import com.oleksa.ecommerce.dto.ProductDto;
+import com.oleksa.ecommerce.dto.request.ProductDetailsRequest;
+import com.oleksa.ecommerce.dto.response.ProductDetailsResponse;
 import com.oleksa.ecommerce.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,11 +10,11 @@ import java.util.List;
 
 public interface ProductService {
 
-    void createProduct(ProductDto productDto);
+    Long createProduct(ProductDetailsRequest productDto);
 
-    ProductDto fetchProduct(Long productId);
+    ProductDetailsResponse fetchProduct(Long productId);
 
-    boolean updateProduct(ProductDto productDto);
+    boolean updateProduct(ProductDetailsRequest productDto);
 
     boolean deactivateProduct(Long productId);
 

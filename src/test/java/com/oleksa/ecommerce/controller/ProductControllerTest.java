@@ -2,6 +2,8 @@ package com.oleksa.ecommerce.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oleksa.ecommerce.dto.ProductDto;
+import com.oleksa.ecommerce.dto.request.ProductDetailsRequest;
+import com.oleksa.ecommerce.dto.response.ProductDetailsResponse;
 import com.oleksa.ecommerce.service.JwtService;
 import com.oleksa.ecommerce.service.ProductService;
 import com.oleksa.ecommerce.service.UserService;
@@ -39,6 +41,8 @@ public class ProductControllerTest {
     private UserService userService;
 
     ProductDto productDto;
+    ProductDetailsRequest productRequest;
+    ProductDetailsResponse productResponse;
 
     @BeforeEach
     void setUp() {
@@ -52,25 +56,45 @@ public class ProductControllerTest {
                 .imageUrl("test-image.jpg")
                 .active(true)
                 .build();
+        productRequest = ProductDetailsRequest.builder()
+                .id(1L)
+                .sku("123456")
+                .name("Test Product")
+                .description("Test Description")
+                .price(100.0)
+                .unitsInStock(10)
+                .imageUrl("test-image.jpg")
+                .active(true)
+                .build();
+        productResponse = ProductDetailsResponse.builder()
+                .id(1L)
+                .sku("123456")
+                .name("Test Product")
+                .description("Test Description")
+                .price(100.0)
+                .unitsInStock(10)
+                .imageUrl("test-image.jpg")
+                .active(true)
+                .build();
     }
 
     @Test
     void shouldCreateProductSuccessfully_WhenValidProductDtoIsGiven() throws Exception {
-        doNothing().when(productService).createProduct(productDto);
+        doNothing().when(productService).createProduct(productRequest);
 
         mockMvc.perform(post("/api/products/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(productDto)))
                 .andExpect(status().isCreated());
 
-        verify(productService, times(1)).createProduct(productDto);
+        verify(productService, times(1)).createProduct(productRequest);
     }
 
     @Test
     void shouldFetchProductSuccessfully_WhenValidProductIdIsGiven() throws Exception {
         Long productId = 1L;
         productDto.setId(productId);
-        when(productService.fetchProduct(productId)).thenReturn(productDto);
+        when(productService.fetchProduct(productId)).thenReturn(productResponse);
 
         mockMvc.perform(get("/api/products/fetch/" + productId)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -86,14 +110,14 @@ public class ProductControllerTest {
     @Test
     void shouldUpdateProductSuccessfully_WhenValidProductDtoIsGiven() throws Exception {
         productDto.setId(1L);
-        when(productService.updateProduct(productDto)).thenReturn(true);
+        when(productService.updateProduct(productRequest)).thenReturn(true);
 
         mockMvc.perform(put("/api/products/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(productDto)))
                 .andExpect(status().isOk());
 
-        verify(productService, times(1)).updateProduct(productDto);
+        verify(productService, times(1)).updateProduct(productRequest);
     }
 
     @Test

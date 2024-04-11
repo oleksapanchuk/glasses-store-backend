@@ -1,10 +1,10 @@
 package com.oleksa.ecommerce.service.impl;
 
-import com.oleksa.ecommerce.dto.ProductDto;
+import com.oleksa.ecommerce.dto.request.ProductDetailsRequest;
+import com.oleksa.ecommerce.dto.response.ProductDetailsResponse;
 import com.oleksa.ecommerce.entity.Product;
 import com.oleksa.ecommerce.entity.add.SortingOrder;
 import com.oleksa.ecommerce.exception.ResourceNotFoundException;
-import com.oleksa.ecommerce.mapper.ProductMapper;
 import com.oleksa.ecommerce.repository.ProductRepository;
 import com.oleksa.ecommerce.service.ProductService;
 import lombok.AllArgsConstructor;
@@ -24,31 +24,60 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository repository;
 
     @Override
-    public void createProduct(ProductDto productDto) {
+    public Long createProduct(ProductDetailsRequest productDto) {
 
-        Product product = ProductMapper.mapToProduct(new Product(), productDto);
+        Product product = Product.builder()
+                .sku(productDto.getSku())
+                .name(productDto.getName())
+                .description(productDto.getDescription())
+                .price(productDto.getPrice())
+                .unitsInStock(productDto.getUnitsInStock())
+                .imageUrl(productDto.getImageUrl())
+                .active(productDto.getActive())
+                .categoryIds(productDto.getCategoryIds()).build();
 
-        repository.save(product);
+        product = repository.save(product);
+
+        return product.getId();
     }
 
     @Override
-    public ProductDto fetchProduct(Long productId) {
+    public ProductDetailsResponse fetchProduct(Long productId) {
 
         Product product = repository.findById(productId).orElseThrow(
                 () -> new ResourceNotFoundException("Product", "productId", productId)
         );
 
-        return ProductMapper.mapToProductDto(product);
+        return ProductDetailsResponse.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .sku(product.getSku())
+                .description(product.getDescription())
+                .price(product.getPrice())
+                .unitsInStock(product.getUnitsInStock())
+                .imageUrl(product.getImageUrl())
+                .active(product.isActive())
+                .categoryIds(product.getCategoryIds())
+                .build();
     }
 
     @Override
-    public boolean updateProduct(ProductDto productDto) {
+    public boolean updateProduct(ProductDetailsRequest productDto) {
 
         Product product = repository.findById(productDto.getId()).orElseThrow(
                 () -> new ResourceNotFoundException("Product", "productId", productDto.getId())
         );
 
-        repository.save(ProductMapper.mapToProduct(product, productDto));
+        product.setSku(productDto.getSku());
+        product.setName(productDto.getName());
+        product.setDescription(productDto.getDescription());
+        product.setPrice(productDto.getPrice());
+        product.setUnitsInStock(productDto.getUnitsInStock());
+        product.setImageUrl(productDto.getImageUrl());
+        product.setActive(productDto.getActive());
+        product.setCategoryIds(productDto.getCategoryIds());
+
+        repository.save(product);
 
         return true;
     }

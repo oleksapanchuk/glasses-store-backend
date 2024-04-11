@@ -18,4 +18,5 @@ public class OrderDto {
     private Integer totalQuantity;
     private Integer totalPrice;
     private String status;
+    private String dateCreated;
 }

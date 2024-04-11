@@ -48,7 +48,7 @@ public class SecurityConfiguration {
                 // Configuring access to endpoints
                 .authorizeHttpRequests(request -> request
                         // You can specify a specific path, * - 1 nesting level, ** - any number of nesting levels
-                        .requestMatchers("/api/auth/**", "/api/users/confirm-account").permitAll()
+                        .requestMatchers("/api/auth/**", "/api/products/**", "/api/users/confirm-account").permitAll()
                         .requestMatchers("/api/swagger-ui/**", "/api/swagger-resources/*", "/api/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/endpoint", "/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())

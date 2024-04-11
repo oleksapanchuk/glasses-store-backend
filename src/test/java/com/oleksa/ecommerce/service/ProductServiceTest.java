@@ -1,6 +1,8 @@
 package com.oleksa.ecommerce.service;
 
 import com.oleksa.ecommerce.dto.ProductDto;
+import com.oleksa.ecommerce.dto.request.ProductDetailsRequest;
+import com.oleksa.ecommerce.dto.response.ProductDetailsResponse;
 import com.oleksa.ecommerce.entity.Product;
 import com.oleksa.ecommerce.exception.ResourceNotFoundException;
 import com.oleksa.ecommerce.repository.ProductRepository;
@@ -33,6 +35,7 @@ public class ProductServiceTest {
 
     private Product product;
     private ProductDto productDto;
+    private ProductDetailsRequest productDetailsRequest;
 
     @BeforeEach
     public void setup() {
@@ -40,6 +43,17 @@ public class ProductServiceTest {
         product.setId(1L);
 
         productDto = ProductDto.builder()
+                .id(1L)
+                .sku("testSku")
+                .name("testName")
+                .description("testDescription")
+                .price(100.0)
+                .unitsInStock(10)
+                .imageUrl("testImageUrl")
+                .active(true)
+                .build();
+
+        productDetailsRequest = ProductDetailsRequest.builder()
                 .id(1L)
                 .sku("testSku")
                 .name("testName")
@@ -59,7 +73,7 @@ public class ProductServiceTest {
     @Test
     void shouldCreateProductSuccessfully() {
         when(productRepository.save(any(Product.class))).thenReturn(product);
-        productService.createProduct(productDto);
+        productService.createProduct(productDetailsRequest);
 
         assertNotNull(productDto);
     }
@@ -68,7 +82,7 @@ public class ProductServiceTest {
     void shouldFetchProductSuccessfully() {
         when(productRepository.findById(anyLong())).thenReturn(Optional.of(product));
 
-        ProductDto result = productService.fetchProduct(1L);
+        ProductDetailsResponse result = productService.fetchProduct(1L);
 
         assertNotNull(result);
     }
@@ -88,7 +102,7 @@ public class ProductServiceTest {
         when(productRepository.findById(anyLong())).thenReturn(Optional.of(product));
         when(productRepository.save(any(Product.class))).thenReturn(product);
 
-        boolean result = productService.updateProduct(productDto);
+        boolean result = productService.updateProduct(productDetailsRequest);
 
         assertTrue(result);
     }
@@ -98,7 +112,7 @@ public class ProductServiceTest {
         productDto.setId(1L);
         when(productRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> productService.updateProduct(productDto));
+        assertThrows(ResourceNotFoundException.class, () -> productService.updateProduct(productDetailsRequest));
     }
 
     @Test

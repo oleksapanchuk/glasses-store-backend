@@ -3,6 +3,8 @@ package com.oleksa.ecommerce.controller;
 import com.oleksa.ecommerce.constants.AppConstants;
 import com.oleksa.ecommerce.dto.ProductDto;
 import com.oleksa.ecommerce.dto.ResponseDto;
+import com.oleksa.ecommerce.dto.request.ProductDetailsRequest;
+import com.oleksa.ecommerce.dto.response.ProductDetailsResponse;
 import com.oleksa.ecommerce.entity.Product;
 import com.oleksa.ecommerce.service.ProductService;
 import jakarta.validation.Valid;
@@ -28,31 +30,34 @@ public class ProductController {
 
     @PostMapping("/create")
     public ResponseEntity<ResponseDto> createProduct(
-            @Valid @RequestBody ProductDto productDto
+            @Valid @RequestBody ProductDetailsRequest productDto
     ) {
-        productService.createProduct(productDto);
+        Long id = productService.createProduct(productDto);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new ResponseDto(AppConstants.STATUS_201, "Product" + AppConstants.MESSAGE_201));
+                .body(new ResponseDto(AppConstants.STATUS_201, "Product: " + id));
     }
 
     @GetMapping("/fetch/{product-id}")
-    public ResponseEntity<ProductDto> fetchProduct(
+    public ResponseEntity<ProductDetailsResponse> fetchProduct(
             @PathVariable(name = "product-id") Long productId
     ) {
 
-        ProductDto productDto = productService.fetchProduct(productId);
+        ProductDetailsResponse product = productService.fetchProduct(productId);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(productDto);
+                .body(product);
     }
 
     @PutMapping("/update")
     public ResponseEntity<ResponseDto> updateProduct(
-            @Valid @RequestBody ProductDto productDto
+            @Valid @RequestBody ProductDetailsRequest productDto
     ) {
+
+        System.out.println("ID " + productDto.getId());
+
         boolean isUpdated = productService.updateProduct(productDto);
 
         if (isUpdated) {
@@ -83,20 +88,7 @@ public class ProductController {
         }
     }
 
-
-    @GetMapping("/paginable-list")
-    public ResponseEntity<Page<Product>> fetchProductPage(
-            Pageable pageable
-    ) {
-
-        Page<Product> productsList = productService.getPaginableList(pageable);
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(productsList);
-    }
-
-    @GetMapping("/search")
+    @GetMapping("/search-products")
     public ResponseEntity<Page<Product>> searchProducts(
             @RequestParam(name = "search-text") String searchText,
             Pageable pageable
@@ -109,7 +101,17 @@ public class ProductController {
                 .body(productsList);
     }
 
-    @GetMapping("/paginable-list/filters")
+    @GetMapping("/fetch-products")
+    public ResponseEntity<Page<Product>> fetchProductPage(
+            Pageable pageable
+    ) {
+        Page<Product> productsList = productService.getPaginableList(pageable);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(productsList);
+    }
+
+    @GetMapping("/fetch-products-with-filters")
     public ResponseEntity<Page<Product>> fetchProductsWithFilters(
             @RequestParam double minPrice,
             @RequestParam double maxPrice,
@@ -124,5 +126,4 @@ public class ProductController {
                 .status(HttpStatus.OK)
                 .body(productsList);
     }
-
 }
