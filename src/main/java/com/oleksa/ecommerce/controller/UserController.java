@@ -7,7 +7,6 @@ import com.oleksa.ecommerce.dto.request.PasswordUpdateRequest;
 import com.oleksa.ecommerce.service.EmailService;
 import com.oleksa.ecommerce.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.security.PermitAll;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -40,12 +39,12 @@ public class UserController {
                 .body(user);
     }
 
-    @GetMapping("/by-username/{username}")
+    @GetMapping("/by-email/{email}")
     public ResponseEntity<UserDto> getByUsername(
-            @PathVariable String username
+            @PathVariable String email
     ) {
 
-        UserDto user = userService.fetchUserByUsername(username);
+        UserDto user = userService.fetchUserByUsername(email);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -69,10 +68,7 @@ public class UserController {
     public ResponseEntity<?> updatePassword(
             @RequestBody PasswordUpdateRequest passwordRequest
     ) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-
-        boolean isUpdated = userService.updatePassword(username, passwordRequest.getOldPassword(), passwordRequest.getNewPassword());
+        boolean isUpdated = userService.updatePassword(passwordRequest.getEmail(), passwordRequest.getOldPassword(), passwordRequest.getNewPassword());
         if (isUpdated) {
             return new ResponseEntity<>(Collections.singletonMap("message", "Password updated successfully"), HttpStatus.OK);
         } else {
@@ -84,10 +80,7 @@ public class UserController {
     public ResponseEntity<ResponseDto> sendEmailConfirmation(
             @RequestParam String email
     ) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-
-        boolean isSent = emailService.sendConfirmationEmail(username, email);
+        boolean isSent = emailService.sendConfirmationEmail(email);
 
         if (isSent) {
             return ResponseEntity

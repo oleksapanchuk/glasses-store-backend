@@ -183,7 +183,7 @@ public class UserServiceTest {
     @Test
     void shouldConfirmUserAccountSuccessfully() {
         when(userRepository.findByUsername(anyString())).thenReturn(Optional.of(user));
-        when(jwtService.extractUserName(anyString())).thenReturn("testUsername");
+        when(jwtService.extractEmail(anyString())).thenReturn("testUsername");
 
         boolean result = userService.confirmUserAccount("token");
 
@@ -192,7 +192,7 @@ public class UserServiceTest {
 
     @Test
     void shouldThrowExceptionWhenUserNotFoundOnConfirmUserAccount() {
-        when(jwtService.extractUserName(anyString())).thenReturn("testUsername");
+        when(jwtService.extractEmail(anyString())).thenReturn("testUsername");
         when(userRepository.findByUsername(anyString())).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class, () -> userService.confirmUserAccount("token"));

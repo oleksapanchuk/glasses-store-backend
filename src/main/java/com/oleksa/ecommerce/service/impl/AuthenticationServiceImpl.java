@@ -39,9 +39,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public JwtAuthenticationResponse signUp(SignUpRequest request) {
 
         User user = User.builder()
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.ROLE_USER)
+                .role(Role.ROLE_ADMIN)
                 .build();
 
         userService.createUser(user);
@@ -88,7 +90,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public JwtAuthenticationResponse refreshToken(TokenRefreshRequest request) {
         String refreshToken = request.getRefreshToken();
 
-        var username = jwtService.extractUserName(refreshToken);
+        var username = jwtService.extractEmail(refreshToken);
 
         UserDetails userDetails = userService
                 .userDetailsService()

@@ -28,7 +28,7 @@ public class Order {
     private Integer totalQuantity;
 
     @Column(name = "total_price")
-    private Integer totalPrice;
+    private Double totalPrice;
 
     @Column(name = "status")
     private String status;
@@ -49,15 +49,9 @@ public class Order {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address shippingAddress;
 
-    public void add(OrderItem item) {
-
-        if (item != null) {
-            if (orderItems == null) {
-                orderItems = new HashSet<>();
-            }
-            orderItems.add(item);
-            item.setOrder(this);
-        }
+    public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
     }
 
 }

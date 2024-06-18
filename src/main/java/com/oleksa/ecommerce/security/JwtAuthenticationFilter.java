@@ -1,6 +1,5 @@
 package com.oleksa.ecommerce.security;
 
-import com.oleksa.ecommerce.exception.TokenExpiredException;
 import com.oleksa.ecommerce.service.JwtService;
 import com.oleksa.ecommerce.service.UserService;
 import jakarta.servlet.FilterChain;
@@ -46,7 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // Trim the prefix and get the username from the token
         var jwt = authHeader.substring(BEARER_PREFIX.length());
-        var username = jwtService.extractUserName(jwt);
+        var username = jwtService.extractEmail(jwt);
 
         if (StringUtils.isNotEmpty(username) && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userService

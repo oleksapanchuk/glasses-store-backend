@@ -10,10 +10,15 @@ import lombok.Data;
 @Schema(description = "Registration Request")
 public class SignUpRequest {
 
-    @Schema(description = "Username", example = "Jon")
-    @Size(min = 5, max = 50, message = "Username must contain from 5 to 50 characters")
-    @NotBlank(message = "Username cannot be empty")
-    private String username;
+    @Schema(description = "First Name", example = "Jon")
+    @Size(min = 5, max = 100, message = "First Name must contain from 5 to 100 characters")
+    @NotBlank(message = "First name cannot be empty")
+    private String firstName;
+
+    @Schema(description = "Last Name", example = "Doe")
+    @Size(min = 5, max = 100, message = "Last Name must contain from 5 to 100 characters")
+    @NotBlank(message = "Last name cannot be empty")
+    private String lastName;
 
     @Schema(description = "E-mail address", example = "jondoe@gmail.com")
     @Size(min = 5, max = 255, message = "The email address must contain between 5 and 255 characters")
@@ -22,6 +27,6 @@ public class SignUpRequest {
     private String email;
 
     @Schema(description = "Password", example = "my_1secret1_password")
-    @Size(max = 255, message = "Password length must be no more than 255 characters")
+    @Size(max = 100, message = "Password length must be no more than 100 characters")
     private String password;
 }

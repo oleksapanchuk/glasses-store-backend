@@ -120,7 +120,7 @@ public class AuthenticationServiceTest {
 
         UserDetails userDetails = new User();
 
-        when(jwtService.extractUserName(anyString())).thenReturn("testUser");
+        when(jwtService.extractEmail(anyString())).thenReturn("testUser");
         when(userService.userDetailsService().loadUserByUsername(anyString())).thenReturn(userDetails);
         when(jwtService.isTokenValid(anyString(), any(UserDetails.class))).thenReturn(true);
         when(jwtService.generateToken(any(UserDetails.class), anyBoolean())).thenReturn("newAccessToken");
@@ -141,7 +141,7 @@ public class AuthenticationServiceTest {
 
         UserDetails userDetails = new User();
 
-        when(jwtService.extractUserName(anyString())).thenReturn("testUser");
+        when(jwtService.extractEmail(anyString())).thenReturn("testUser");
         when(userService.userDetailsService().loadUserByUsername(anyString())).thenReturn(userDetails);
         when(jwtService.isTokenValid(anyString(), any(UserDetails.class))).thenReturn(false);
 

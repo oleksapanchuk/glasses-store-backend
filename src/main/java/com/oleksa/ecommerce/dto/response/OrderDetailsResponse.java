@@ -15,7 +15,7 @@ public class OrderDetailsResponse {
     private String orderTrackingNumber;
 
     @Schema(description = "Order total price")
-    private Integer totalPrice;
+    private Double totalPrice;
 
     @Schema(description = "Order status")
     private String status;

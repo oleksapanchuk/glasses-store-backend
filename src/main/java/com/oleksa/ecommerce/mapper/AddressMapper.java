@@ -3,6 +3,8 @@ package com.oleksa.ecommerce.mapper;
 import com.oleksa.ecommerce.dto.AddressDto;
 import com.oleksa.ecommerce.entity.Address;
 
+import java.util.List;
+
 public class AddressMapper {
 
     public static AddressDto mapToAddressDto(Address address) {
@@ -13,6 +15,7 @@ public class AddressMapper {
                 .state(address.getState())
                 .country(address.getCountry())
                 .zipCode(address.getZipCode())
+                .userId(address.getUser().getId())
                 .build();
     }
 
@@ -26,5 +29,11 @@ public class AddressMapper {
                 .country(addressDto.getCountry())
                 .zipCode(addressDto.getZipCode())
                 .build();
+    }
+
+    public static List<AddressDto> mapToAddressDtoList(List<Address> addresses) {
+        return addresses.stream()
+                .map(AddressMapper::mapToAddressDto)
+                .toList();
     }
 }

@@ -17,7 +17,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Optional<Order> findByOrderTrackingNumber(@Param("trackingNumber") String trackingNumber);
 
-    Page<Order> findByUserUsernameOrderByDateCreatedDesc(@Param("username") String username, Pageable pageable);
+    Page<Order> findByUserEmailOrderByDateCreatedDesc(@Param("email") String email, Pageable pageable);
 
     @Query("SELECT o FROM Order o WHERE o.orderTrackingNumber LIKE %:trackingNumber%")
     Page<Order> findByTrackingNumber(String trackingNumber, Pageable pageable);

@@ -17,7 +17,7 @@ public interface OrderService {
 
     OrderDto fetchOrderByTrackingNumber(String username, String orderTrackingNumber);
 
-    Page<OrderDto> fetchOrdersByUsername(String username, Pageable pageable);
+    Page<OrderDto> fetchOrdersByEmail(String email, Pageable pageable);
 
     OrderDetailsResponse fetchOrderDetails(String username, Long orderId);
 

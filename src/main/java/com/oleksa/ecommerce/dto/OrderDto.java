@@ -16,7 +16,7 @@ public class OrderDto {
     private Long userId;
     private String orderTrackingNumber;
     private Integer totalQuantity;
-    private Integer totalPrice;
+    private Double totalPrice;
     private String status;
     private String dateCreated;
 }

@@ -95,8 +95,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public boolean confirmUserAccount(String token) {
-        String email = jwtService.extractUserName(token);
-        log.info("Username from token: {}", email);
+        String email = jwtService.extractEmail(token);
+        log.info("Email from token: {}", email);
 
         User user = repository.findByEmail(email).orElseThrow(
                 () -> new ResourceNotFoundException("User", "email", email)

@@ -11,7 +11,7 @@ import java.util.Set;
 @Data
 @Builder
 public class PurchaseRequest {
-    private AddressDto shippingAddress;
-    private OrderDto order;
+    private Long userId;
+    private AddressDto address;
     private Set<OrderItem> orderItems;
 }

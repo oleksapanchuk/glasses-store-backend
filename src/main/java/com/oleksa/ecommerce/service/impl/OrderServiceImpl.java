@@ -69,15 +69,28 @@ public class OrderServiceImpl implements OrderService {
             throw new IllegalArgumentException("Purchase request is null");
         }
 
-        Order order = OrderMapper.mapToOrder(purchase.getOrder());
+        Order order = new Order();
         order.setOrderTrackingNumber(generateOrderTrackingNumber());
         order.setStatus(OrderStatus.ACCEPTED.name());
+
         Set<OrderItem> orderItems = purchase.getOrderItems();
-        orderItems.forEach(order::add);
-        Address shippingAddress = AddressMapper.mapToAddress(purchase.getShippingAddress());
-        shippingAddress.setUser(user);
-        order.setShippingAddress(shippingAddress);
+        orderItems.forEach(order::addOrderItem);
+
+        order.setTotalPrice(orderItems.stream()
+                .mapToDouble(item -> item.getQuantity() * productRepository.findById(item.getProductId()).get().getPrice())
+                .sum()
+        );
+
+        order.setTotalQuantity(orderItems.stream()
+                .mapToInt(OrderItem::getQuantity)
+                .sum()
+        );
+
+        Address address = AddressMapper.mapToAddress(purchase.getAddress());
+        address.setUser(user);
+        order.setShippingAddress(address);
         order.setUser(user);
+
         orderRepository.save(order);
 
         return mapToOrderDto(order);
@@ -120,8 +133,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<OrderDto> fetchOrdersByUsername(String username, Pageable pageable) {
-        Page<Order> ordersPage = orderRepository.findByUserUsernameOrderByDateCreatedDesc(username, pageable);
+    public Page<OrderDto> fetchOrdersByEmail(String email, Pageable pageable) {
+        Page<Order> ordersPage = orderRepository.findByUserEmailOrderByDateCreatedDesc(email, pageable);
 
         List<OrderDto> orderDtoList = ordersPage.getContent().stream()
                 .map(OrderMapper::mapToOrderDto)

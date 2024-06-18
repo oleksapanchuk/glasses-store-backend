@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Log4j2
 @AllArgsConstructor
-@RequestMapping("/api/order")
+@RequestMapping("/api/orders")
 @RestController
 public class OrderController {
 
@@ -30,9 +30,9 @@ public class OrderController {
             @PathVariable(name = "order-id") Long orderId
     ) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
+        String email = auth.getName();
 
-        OrderDto orderDto = orderService.fetchOrderById(username, orderId);
+        OrderDto orderDto = orderService.fetchOrderById(email, orderId);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -44,23 +44,23 @@ public class OrderController {
             @PathVariable(name = "order-tracking-number") String orderTrackingNumber
     ) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
+        String email = auth.getName();
 
-        OrderDto orderDto = orderService.fetchOrderByTrackingNumber(username, orderTrackingNumber);
+        OrderDto orderDto = orderService.fetchOrderByTrackingNumber(email, orderTrackingNumber);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(orderDto);
     }
 
-    @GetMapping("/fetch-by-username")
+    @GetMapping("/fetch-by-email")
     public ResponseEntity<Page<OrderDto>> fetchOrderByUsername(
             Pageable pageable
     ) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
+        String email = auth.getName();
 
-        Page<OrderDto> orderDtoPage = orderService.fetchOrdersByUsername(username, pageable);
+        Page<OrderDto> orderDtoPage = orderService.fetchOrdersByEmail(email, pageable);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

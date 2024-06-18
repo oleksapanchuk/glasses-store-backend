@@ -2,7 +2,6 @@ package com.oleksa.ecommerce.service.impl;
 
 
 import com.oleksa.ecommerce.entity.User;
-import com.oleksa.ecommerce.exception.TokenExpiredException;
 import com.oleksa.ecommerce.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -34,7 +33,7 @@ public class JwtServiceImpl implements JwtService {
      * @param token token
      * @return username
      */
-    public String extractUserName(String token) {
+    public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -62,8 +61,8 @@ public class JwtServiceImpl implements JwtService {
      * @return true if the token is valid
      */
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String userName = extractUserName(token);
-        return (userName.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        final String email = extractEmail(token);
+        return (email.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
     /**

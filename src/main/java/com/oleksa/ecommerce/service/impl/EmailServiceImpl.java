@@ -24,7 +24,7 @@ public class EmailServiceImpl implements EmailService {
     private final JavaMailSender emailSender;
 
     @Override
-    public boolean sendConfirmationEmail(String username, String email) {
+    public boolean sendConfirmationEmail(String email) {
 
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new ResourceNotFoundException("User", "email", email)

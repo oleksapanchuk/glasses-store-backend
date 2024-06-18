@@ -12,6 +12,8 @@ import com.oleksa.ecommerce.service.AddressService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Repository
 public class AddressServiceImpl implements AddressService {
@@ -20,77 +22,53 @@ public class AddressServiceImpl implements AddressService {
     private final UserRepository userRepository;
 
     @Override
-    public AddressDto createAddress(String email, AddressDto addressDto) {
-
-        Address address = AddressMapper.mapToAddress(addressDto);
-
-        User user = userRepository.findByEmail(email).orElseThrow(
-                () -> new ResourceNotFoundException("User", "email", email)
-        );
-
-        address.setUser(user);
-
-        addressRepository.save(address);
-
-        return AddressMapper.mapToAddressDto(address);
+    public List<AddressDto> fetchAddressesByUserId(Long userId) {
+        List<Address> addresses = addressRepository.findAllByUserId(userId);
+        if (addresses != null) {
+            return AddressMapper.mapToAddressDtoList(addresses);
+        }
+        return List.of();
     }
 
     @Override
-    public AddressDto fetchAddress(String email, Long addressId) {
-
-        User user = userRepository.findByEmail(email).orElseThrow(
-                () -> new ResourceNotFoundException("User", "username", email)
-        );
-
+    public AddressDto fetchAddress(Long addressId) {
         Address address = addressRepository.findById(addressId).orElseThrow(
                 () -> new ResourceNotFoundException("Address", "addressId", addressId)
         );
-
-        if ((long) address.getUser().getId() != user.getId()) {
-            throw new UnauthorizedAccessException("Address", "email", email);
-        }
-
         return AddressMapper.mapToAddressDto(address);
     }
 
     @Override
-    public boolean updateAddress(String email, AddressDto addressDto) {
-        User user = userRepository.findByEmail(email).orElseThrow(
-                () -> new ResourceNotFoundException("User", "email", email)
+    public AddressDto createAddress(AddressDto addressDto) {
+        Address address = AddressMapper.mapToAddress(addressDto);
+        User user = userRepository.findById(addressDto.getUserId()).orElseThrow(
+                () -> new ResourceNotFoundException("User", "id", addressDto.getUserId())
         );
+        address.setUser(user);
+        addressRepository.save(address);
+        return AddressMapper.mapToAddressDto(address);
+    }
 
+    @Override
+    public AddressDto updateAddress(AddressDto addressDto) {
+        User user = userRepository.findById(addressDto.getUserId()).orElseThrow(
+                () -> new ResourceNotFoundException("User", "id", addressDto.getUserId())
+        );
         Address address = addressRepository.findById(addressDto.getId()).orElseThrow(
                 () -> new ResourceNotFoundException("Address", "addressId", addressDto.getId())
         );
-
-        if ((long) address.getUser().getId() != user.getId()) {
-            throw new UnauthorizedAccessException("Address", "email", email);
-        }
-
         Address newAddress = AddressMapper.mapToAddress(addressDto);
         newAddress.setUser(user);
-
-        addressRepository.save(newAddress);
-
-        return true;
+        Address updatedAddress = addressRepository.save(newAddress);
+        return AddressMapper.mapToAddressDto(updatedAddress);
     }
 
     @Override
-    public boolean deleteAddress(String email, Long addressId) {
-        User user = userRepository.findByEmail(email).orElseThrow(
-                () -> new ResourceNotFoundException("User", "email", email)
-        );
-
-        Address address = addressRepository.findById(addressId).orElseThrow(
-                () -> new ResourceNotFoundException("Address", "addressId", addressId)
-        );
-
-        if ((long) address.getUser().getId() != user.getId()) {
-            throw new UnauthorizedAccessException("Address", "email", email);
+    public boolean deleteAddress(Long addressId) {
+        if (!addressRepository.existsById(addressId)) {
+            throw new ResourceNotFoundException("Address", "addressId", addressId);
         }
-
         addressRepository.deleteById(addressId);
-
         return true;
     }
 }

@@ -2,12 +2,18 @@ package com.oleksa.ecommerce.service;
 
 import com.oleksa.ecommerce.dto.AddressDto;
 
+import java.util.List;
+
 public interface AddressService {
-    AddressDto createAddress(String username, AddressDto addressDto);
 
-    AddressDto fetchAddress(String username, Long addressId);
+    List<AddressDto> fetchAddressesByUserId(Long userId);
 
-    boolean updateAddress(String username, AddressDto addressDto);
+    AddressDto fetchAddress(Long addressId);
 
-    boolean deleteAddress(String username, Long addressId);
+    AddressDto createAddress(AddressDto addressDto);
+
+    AddressDto updateAddress(AddressDto addressDto);
+
+    boolean deleteAddress(Long addressId);
+
 }
