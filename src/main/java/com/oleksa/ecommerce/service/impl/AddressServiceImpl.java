@@ -20,12 +20,12 @@ public class AddressServiceImpl implements AddressService {
     private final UserRepository userRepository;
 
     @Override
-    public AddressDto createAddress(String username, AddressDto addressDto) {
+    public AddressDto createAddress(String email, AddressDto addressDto) {
 
         Address address = AddressMapper.mapToAddress(addressDto);
 
-        User user = userRepository.findByUsername(username).orElseThrow(
-                () -> new ResourceNotFoundException("User", "username", username)
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new ResourceNotFoundException("User", "email", email)
         );
 
         address.setUser(user);
@@ -36,10 +36,10 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public AddressDto fetchAddress(String username, Long addressId) {
+    public AddressDto fetchAddress(String email, Long addressId) {
 
-        User user = userRepository.findByUsername(username).orElseThrow(
-                () -> new ResourceNotFoundException("User", "username", username)
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new ResourceNotFoundException("User", "username", email)
         );
 
         Address address = addressRepository.findById(addressId).orElseThrow(
@@ -47,16 +47,16 @@ public class AddressServiceImpl implements AddressService {
         );
 
         if ((long) address.getUser().getId() != user.getId()) {
-            throw new UnauthorizedAccessException("Address", "username", username);
+            throw new UnauthorizedAccessException("Address", "email", email);
         }
 
         return AddressMapper.mapToAddressDto(address);
     }
 
     @Override
-    public boolean updateAddress(String username, AddressDto addressDto) {
-        User user = userRepository.findByUsername(username).orElseThrow(
-                () -> new ResourceNotFoundException("User", "username", username)
+    public boolean updateAddress(String email, AddressDto addressDto) {
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new ResourceNotFoundException("User", "email", email)
         );
 
         Address address = addressRepository.findById(addressDto.getId()).orElseThrow(
@@ -64,7 +64,7 @@ public class AddressServiceImpl implements AddressService {
         );
 
         if ((long) address.getUser().getId() != user.getId()) {
-            throw new UnauthorizedAccessException("Address", "username", username);
+            throw new UnauthorizedAccessException("Address", "email", email);
         }
 
         Address newAddress = AddressMapper.mapToAddress(addressDto);
@@ -76,9 +76,9 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public boolean deleteAddress(String username, Long addressId) {
-        User user = userRepository.findByUsername(username).orElseThrow(
-                () -> new ResourceNotFoundException("User", "username", username)
+    public boolean deleteAddress(String email, Long addressId) {
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new ResourceNotFoundException("User", "email", email)
         );
 
         Address address = addressRepository.findById(addressId).orElseThrow(
@@ -86,7 +86,7 @@ public class AddressServiceImpl implements AddressService {
         );
 
         if ((long) address.getUser().getId() != user.getId()) {
-            throw new UnauthorizedAccessException("Address", "username", username);
+            throw new UnauthorizedAccessException("Address", "email", email);
         }
 
         addressRepository.deleteById(addressId);

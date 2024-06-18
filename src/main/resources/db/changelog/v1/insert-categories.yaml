@@ -1,0 +1,113 @@
+databaseChangeLog:
+  - changeSet:
+      id: 10
+      author: Oleksandr Panchuk
+      changes:
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: 'Men'
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: 'Women'
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: 'Unisex'
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: 'Kids'
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: 'Teens'
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: 'Adults'
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: 'Prescription'
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: 'Reading'
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: 'Computer'
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: 'Sunglasses'
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: 'Metal Frame'
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: 'Plastic Frame'
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: 'Wooden Frame'
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: 'Retro/Vintage'
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: 'Designer'
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: 'Sports'
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: 'Fashion'
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: 'Accessories'

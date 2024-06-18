@@ -12,7 +12,7 @@ public class ProductMapper {
                 .name(product.getName())
                 .description(product.getDescription())
                 .price(product.getPrice())
-                .active(product.isActive())
+                .available(product.isAvailable())
                 .unitsInStock(product.getUnitsInStock())
                 .imageUrl(product.getImageUrl())
                 .build();
@@ -23,7 +23,7 @@ public class ProductMapper {
         product.setName(productDto.getName());
         product.setDescription(productDto.getDescription());
         product.setPrice(productDto.getPrice());
-        product.setActive(productDto.getActive());
+        product.setAvailable(productDto.getAvailable());
         product.setUnitsInStock(productDto.getUnitsInStock());
         product.setImageUrl(productDto.getImageUrl());
 

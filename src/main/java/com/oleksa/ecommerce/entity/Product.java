@@ -8,46 +8,46 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.util.Date;
 import java.util.List;
 
-@Entity
 @Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Table(name = "products")
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id")
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "product_sku")
+    @Column(name = "sku")
     private String sku;
 
-    @Column(name = "product_name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "product_description")
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "product_price")
+    @Column(name = "price")
     private Double price;
 
-    @Column(name = "product_image_url")
+    @Column(name = "image_url")
     private String imageUrl;
 
-    @Column(name = "product_active")
-    private boolean active;
+    @Column(name = "available")
+    private boolean available;
 
-    @Column(name = "product_quantity")
+    @Column(name = "quantity")
     private int unitsInStock;
 
-    @Column(name = "product_date_created")
+    @Column(name = "date_created")
     @CreationTimestamp
     private Date dateCreated;
 
-    @Column(name = "product_last_updated")
+    @Column(name = "last_updated")
     @UpdateTimestamp
     private Date lastUpdated;
 

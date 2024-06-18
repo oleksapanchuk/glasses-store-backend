@@ -50,7 +50,7 @@ public class ProductServiceTest {
                 .price(100.0)
                 .unitsInStock(10)
                 .imageUrl("testImageUrl")
-                .active(true)
+                .available(true)
                 .build();
 
         productDetailsRequest = ProductDetailsRequest.builder()

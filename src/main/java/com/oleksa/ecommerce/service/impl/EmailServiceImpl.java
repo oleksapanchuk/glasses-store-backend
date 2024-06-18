@@ -26,12 +26,12 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public boolean sendConfirmationEmail(String username, String email) {
 
-        User user = userRepository.findByUsername(username).orElseThrow(
-                () -> new ResourceNotFoundException("User", "username", username)
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new ResourceNotFoundException("User", "email", email)
         );
 
-        if (!user.getUsername().equals(username)) {
-            throw new UnauthorizedAccessException("Sending email", "username", username);
+        if (!user.getUsername().equals(email)) {
+            throw new UnauthorizedAccessException("Sending email", "email", email);
         }
 
         if (!user.getEmail().equals(email)) {

@@ -23,7 +23,6 @@ public class UsersMapper {
     public static User mapToUser(UserDto userDto, User user) {
         user.setId(userDto.getId());
         user.setEmail(userDto.getEmail());
-        user.setUsername(userDto.getUsername());
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setPhoneNumber(userDto.getPhoneNumber());

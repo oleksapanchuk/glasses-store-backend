@@ -7,33 +7,33 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
 @Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Table(name = "orders")
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_id")
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "order_tracking_number")
+    @Column(name = "tracking_number")
     private String orderTrackingNumber;
 
-    @Column(name = "order_total_quantity")
+    @Column(name = "total_quantity")
     private Integer totalQuantity;
 
-    @Column(name = "order_total_price")
+    @Column(name = "total_price")
     private Integer totalPrice;
 
-    @Column(name = "order_status")
+    @Column(name = "status")
     private String status;
 
-    @Column(name = "order_date_created")
+    @Column(name = "date_created")
     @CreationTimestamp
     private String dateCreated;
 
@@ -46,7 +46,7 @@ public class Order {
     private User user;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "shipping_address_id", referencedColumnName = "address_id")
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address shippingAddress;
 
     public void add(OrderItem item) {

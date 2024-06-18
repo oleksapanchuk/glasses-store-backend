@@ -5,7 +5,6 @@ import com.oleksa.ecommerce.entity.ProductCategory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.Page;
@@ -33,7 +32,7 @@ public class ProductRepositoryTests {
                 .name("test_name")
                 .description("test_description")
                 .price(26.03)
-                .active(true)
+                .available(true)
                 .unitsInStock(111)
                 .imageUrl("test_url")
                 .build();

@@ -1,31 +1,24 @@
 package com.oleksa.ecommerce.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.experimental.SuperBuilder;
+import lombok.*;
 
-import java.math.BigDecimal;
 
-@Entity
-@SuperBuilder
-@NoArgsConstructor
-@Table(name = "order_items")
+@Builder
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "order_items")
 public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_item_id")
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "order_item_unit_price")
-    private BigDecimal unitPrice;
-
-    @Column(name = "order_item_quantity")
+    @Column(name = "quantity")
     private int quantity;
 
     @Column(name = "product_id")

@@ -3,18 +3,18 @@ package com.oleksa.ecommerce.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
 @Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Table(name = "addresses")
 public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "address_id")
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "street")

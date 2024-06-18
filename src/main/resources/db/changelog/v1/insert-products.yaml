@@ -1,0 +1,725 @@
+databaseChangeLog:
+  - changeSet:
+      id: 11
+      author: Oleksandr Panchuk
+      changes:
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU001'
+              - column:
+                  name: name
+                  value: 'Classic Aviator Sunglasses'
+              - column:
+                  name: description
+                  value: 'Stylish and durable aviator sunglasses.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '49.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/3762932/pexels-photo-3762932.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU002'
+              - column:
+                  name: name
+                  value: 'Retro Round Glasses'
+              - column:
+                  name: description
+                  value: 'Vintage-inspired round glasses.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '39.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/3414327/pexels-photo-3414327.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU003'
+              - column:
+                  name: name
+                  value: 'Modern Square Glasses'
+              - column:
+                  name: description
+                  value: 'Contemporary square glasses for a sharp look.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '44.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/567448/pexels-photo-567448.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU004'
+              - column:
+                  name: name
+                  value: 'Sporty Wrap Sunglasses'
+              - column:
+                  name: description
+                  value: 'Protective wrap sunglasses for sports.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '54.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/3441119/pexels-photo-3441119.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU005'
+              - column:
+                  name: name
+                  value: 'Elegant Cat Eye Glasses'
+              - column:
+                  name: description
+                  value: 'Chic cat eye glasses for a sophisticated style.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '49.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/2710178/pexels-photo-2710178.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU006'
+              - column:
+                  name: name
+                  value: 'Trendy Wayfarer Sunglasses'
+              - column:
+                  name: description
+                  value: 'Fashionable wayfarer sunglasses for everyday wear.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '45.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/5257246/pexels-photo-5257246.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU007'
+              - column:
+                  name: name
+                  value: 'Stylish Clubmaster Glasses'
+              - column:
+                  name: description
+                  value: 'Timeless clubmaster glasses with a modern twist.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '47.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/5429852/pexels-photo-5429852.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU008'
+              - column:
+                  name: name
+                  value: 'Durable Sports Glasses'
+              - column:
+                  name: description
+                  value: 'High-performance glasses for sports and outdoor activities.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '55.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/975668/pexels-photo-975668.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU009'
+              - column:
+                  name: name
+                  value: 'Chic Oversized Sunglasses'
+              - column:
+                  name: description
+                  value: 'Bold oversized sunglasses for a statement look.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '48.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/947885/pexels-photo-947885.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU010'
+              - column:
+                  name: name
+                  value: 'Versatile Rectangle Glasses'
+              - column:
+                  name: description
+                  value: 'Classic rectangle glasses suitable for any face shape.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '42.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/1112203/pexels-photo-1112203.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU011'
+              - column:
+                  name: name
+                  value: 'Fashionable Oval Glasses'
+              - column:
+                  name: description
+                  value: 'Elegant oval glasses for a refined look.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '43.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/1223343/pexels-photo-1223343.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU012'
+              - column:
+                  name: name
+                  value: 'Trendy Browline Glasses'
+              - column:
+                  name: description
+                  value: 'Stylish browline glasses for a retro-inspired look.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '46.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/871495/pexels-photo-871495.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU013'
+              - column:
+                  name: name
+                  value: 'Cool Pilot Sunglasses'
+              - column:
+                  name: description
+                  value: 'Iconic pilot sunglasses with a modern edge.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '50.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/1499477/pexels-photo-1499477.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU014'
+              - column:
+                  name: name
+                  value: 'Sophisticated Rimless Glasses'
+              - column:
+                  name: description
+                  value: 'Minimalist rimless glasses for a sleek look.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '51.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/762080/pexels-photo-762080.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU015'
+              - column:
+                  name: name
+                  value: 'Stylish Semi-Rimless Glasses'
+              - column:
+                  name: description
+                  value: 'Modern semi-rimless glasses for a subtle style.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '52.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/1018134/pexels-photo-1018134.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU016'
+              - column:
+                  name: name
+                  value: 'Cool Mirrored Sunglasses'
+              - column:
+                  name: description
+                  value: 'Trendy mirrored sunglasses for a standout look.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '53.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/2095953/pexels-photo-2095953.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU017'
+              - column:
+                  name: name
+                  value: 'Elegant Butterfly Sunglasses'
+              - column:
+                  name: description
+                  value: 'Feminine butterfly sunglasses with a glamorous vibe.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '54.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/1756620/pexels-photo-1756620.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU018'
+              - column:
+                  name: name
+                  value: 'Versatile Round Sunglasses'
+              - column:
+                  name: description
+                  value: 'Timeless round sunglasses for a vintage-inspired style.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '55.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/839011/pexels-photo-839011.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU019'
+              - column:
+                  name: name
+                  value: 'Trendy Shield Sunglasses'
+              - column:
+                  name: description
+                  value: 'Futuristic shield sunglasses for a bold look.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '56.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/1648023/pexels-photo-1648023.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU020'
+              - column:
+                  name: name
+                  value: 'Classic Horn-Rimmed Glasses'
+              - column:
+                  name: description
+                  value: 'Retro horn-rimmed glasses for a distinctive style.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '57.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/354951/pexels-photo-354951.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU021'
+              - column:
+                  name: name
+                  value: 'Stylish Geometric Glasses'
+              - column:
+                  name: description
+                  value: 'Unique geometric glasses for a standout style.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '58.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/582039/pexels-photo-582039.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU022'
+              - column:
+                  name: name
+                  value: 'Cool Flat Top Sunglasses'
+              - column:
+                  name: description
+                  value: 'Edgy flat top sunglasses for a statement look.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '59.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/994848/pexels-photo-994848.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU023'
+              - column:
+                  name: name
+                  value: 'Elegant Round Metal Glasses'
+              - column:
+                  name: description
+                  value: 'Chic round metal glasses for a refined style.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '60.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/1466844/pexels-photo-1466844.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU024'
+              - column:
+                  name: name
+                  value: 'Trendy Clear Frame Glasses'
+              - column:
+                  name: description
+                  value: 'Fashionable clear frame glasses for a modern look.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '61.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/3768166/pexels-photo-3768166.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU025'
+              - column:
+                  name: name
+                  value: 'Versatile Polarized Sunglasses'
+              - column:
+                  name: description
+                  value: 'Practical polarized sunglasses for glare reduction.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '62.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/1652340/pexels-photo-1652340.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU026'
+              - column:
+                  name: name
+                  value: 'Stylish Tortoiseshell Glasses'
+              - column:
+                  name: description
+                  value: 'Classic tortoiseshell glasses for a timeless style.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '63.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/1752467/pexels-photo-1752467.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU027'
+              - column:
+                  name: name
+                  value: 'Cool Gradient Sunglasses'
+              - column:
+                  name: description
+                  value: 'Trendy gradient sunglasses for a fashionable look.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '64.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/944761/pexels-photo-944761.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU028'
+              - column:
+                  name: name
+                  value: 'Elegant Pearl Glasses'
+              - column:
+                  name: description
+                  value: 'Feminine pearl glasses for a chic style.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '65.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/2035764/pexels-photo-2035764.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU029'
+              - column:
+                  name: name
+                  value: 'Trendy Neon Sunglasses'
+              - column:
+                  name: description
+                  value: 'Bold neon sunglasses for a standout style.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '66.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/3307616/pexels-photo-3307616.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: products
+            columns:
+              - column:
+                  name: sku
+                  value: 'SKU030'
+              - column:
+                  name: name
+                  value: 'Versatile Clip-On Sunglasses'
+              - column:
+                  name: description
+                  value: 'Practical clip-on sunglasses for versatile wear.'
+              - column:
+                  name: quantity
+                  value: '20'
+              - column:
+                  name: price
+                  value: '67.99'
+              - column:
+                  name: image_url
+                  value: 'https://images.pexels.com/photos/4491461/pexels-photo-4491461.jpeg?auto=compress&cs=tinysrgb&w=600'
+              - column:
+                  name: date_created
+                  valueDate: '2020-01-01T10:00:00'

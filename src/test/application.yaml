@@ -1,0 +1,61 @@
+server:
+  port: 8080
+  ssl:
+    enabled: true
+    key-alias: "oleksapanchuk"
+    key-store: classpath:oleksapanchuk-keystore.p12
+    key-store-password: "secret"
+    key-store-type: "PKCS12"
+
+spring:
+  application:
+    name: "Panorama"
+  datasource:
+    url: "jdbc:mysql://mysql:3306/panorama-shop"
+    username: "root"
+    password: "1111"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+#  jpa:
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+  data:
+    rest:
+      detection-strategy: annotated
+      base-path: "/api"
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: "olexandrpan4uk@gmail.com"
+    password: "cjvm kbxb qbdr hgak"
+    default-encoding: UTF-8
+    properties:
+      mail:
+        mime:
+          charset: UTF-8
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 1000
+          timeout: 1000
+          writetimeout: 1000
+
+allowed:
+  origins: "http://localhost:4200"
+
+token:
+  signing:
+    key: "eyJhcGkta2V5IjogImFzbmJ0dWVhb3J1ZW9idTQzNW5zdGF1In0K"
+
+stripe:
+  keys:
+    secret: "sk_test_51OcWdTAQX8KpKNai4IvFkWouM4GsZxfo7T8SbcTWPjdjyusZQTvi7hQ1oVnV8IVKYdpovF5zA7C5dl4OdI7spMyB00ECgVOpqV"

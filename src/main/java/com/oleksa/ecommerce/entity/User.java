@@ -11,29 +11,24 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Entity
 @Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Table(name = "users")
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_seq")
-//    @SequenceGenerator(name = "user_id_seq", sequenceName = "user_id_seq", allocationSize = 1)
-    @Column(name = "user_id")
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "user_username", unique = true, nullable = false)
-    private String username;
-
-    @Column(name = "user_email", unique = true, nullable = false)
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "user_password", nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "first_name", length = 30)
@@ -45,14 +40,14 @@ public class User implements UserDetails {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "is_subscribed")
-    private boolean subscribed;
-
-    @Column(name = "is_verified")
+    @Column(name = "verified")
     private boolean verified;
 
+    @Column(name = "subscribed")
+    private boolean subscribed;
+
     @Enumerated(EnumType.STRING)
-    @Column(name = "user_role")
+    @Column(name = "role")
     private Role role;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
@@ -78,7 +73,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override

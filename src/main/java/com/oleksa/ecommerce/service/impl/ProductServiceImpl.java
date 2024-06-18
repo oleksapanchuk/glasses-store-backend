@@ -33,7 +33,7 @@ public class ProductServiceImpl implements ProductService {
                 .price(productDto.getPrice())
                 .unitsInStock(productDto.getUnitsInStock())
                 .imageUrl(productDto.getImageUrl())
-                .active(productDto.getActive())
+                .available(productDto.getActive())
                 .categoryIds(productDto.getCategoryIds()).build();
 
         product = repository.save(product);
@@ -56,7 +56,7 @@ public class ProductServiceImpl implements ProductService {
                 .price(product.getPrice())
                 .unitsInStock(product.getUnitsInStock())
                 .imageUrl(product.getImageUrl())
-                .active(product.isActive())
+                .active(product.isAvailable())
                 .categoryIds(product.getCategoryIds())
                 .build();
     }
@@ -74,7 +74,7 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(productDto.getPrice());
         product.setUnitsInStock(productDto.getUnitsInStock());
         product.setImageUrl(productDto.getImageUrl());
-        product.setActive(productDto.getActive());
+        product.setAvailable(productDto.getActive());
         product.setCategoryIds(productDto.getCategoryIds());
 
         repository.save(product);
@@ -89,7 +89,7 @@ public class ProductServiceImpl implements ProductService {
                 () -> new ResourceNotFoundException("Product", "productId", productId)
         );
 
-        product.setActive(false);
+        product.setAvailable(false);
 
         repository.save(product);
 

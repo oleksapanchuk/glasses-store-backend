@@ -1,7 +1,5 @@
 package com.oleksa.ecommerce;
 
-import com.oleksa.ecommerce.service.JwtService;
-import com.oleksa.ecommerce.service.impl.JwtServiceImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -9,10 +7,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
-public class SpringBootEcommerceApplication {
+public class ShopApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringBootEcommerceApplication.class, args);
+		SpringApplication.run(ShopApplication.class, args);
 	}
 
 	@Bean

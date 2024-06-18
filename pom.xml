@@ -18,11 +18,15 @@
     </properties>
     <dependencies>
 
-        <!-- https://mvnrepository.com/artifact/com.stripe/stripe-java -->
         <dependency>
             <groupId>com.stripe</groupId>
             <artifactId>stripe-java</artifactId>
             <version>20.80.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
         </dependency>
 
         <dependency>

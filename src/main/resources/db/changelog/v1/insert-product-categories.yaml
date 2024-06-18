@@ -1,0 +1,821 @@
+databaseChangeLog:
+  - changeSet:
+      id: 12
+      author: Oleksandr Panchuk
+      changes:
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '1'
+              - column:
+                  name: category_id
+                  value: '2'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '2'
+              - column:
+                  name: category_id
+                  value: '2'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '3'
+              - column:
+                  name: category_id
+                  value: '2'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '4'
+              - column:
+                  name: category_id
+                  value: '1'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '5'
+              - column:
+                  name: category_id
+                  value: '2'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '6'
+              - column:
+                  name: category_id
+                  value: '2'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '7'
+              - column:
+                  name: category_id
+                  value: '1'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '8'
+              - column:
+                  name: category_id
+                  value: '2'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '9'
+              - column:
+                  name: category_id
+                  value: '2'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '10'
+              - column:
+                  name: category_id
+                  value: '1'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '11'
+              - column:
+                  name: category_id
+                  value: '1'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '12'
+              - column:
+                  name: category_id
+                  value: '1'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '13'
+              - column:
+                  name: category_id
+                  value: '2'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '14'
+              - column:
+                  name: category_id
+                  value: '1'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '15'
+              - column:
+                  name: category_id
+                  value: '1'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '16'
+              - column:
+                  name: category_id
+                  value: '1'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '17'
+              - column:
+                  name: category_id
+                  value: '1'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '18'
+              - column:
+                  name: category_id
+                  value: '1'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '19'
+              - column:
+                  name: category_id
+                  value: '1'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '20'
+              - column:
+                  name: category_id
+                  value: '2'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '21'
+              - column:
+                  name: category_id
+                  value: '2'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '22'
+              - column:
+                  name: category_id
+                  value: '1'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '23'
+              - column:
+                  name: category_id
+                  value: '1'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '24'
+              - column:
+                  name: category_id
+                  value: '1'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '25'
+              - column:
+                  name: category_id
+                  value: '1'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '26'
+              - column:
+                  name: category_id
+                  value: '1'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '27'
+              - column:
+                  name: category_id
+                  value: '1'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '28'
+              - column:
+                  name: category_id
+                  value: '1'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '29'
+              - column:
+                  name: category_id
+                  value: '1'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '30'
+              - column:
+                  name: category_id
+                  value: '1'
+
+
+
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '1'
+              - column:
+                  name: category_id
+                  value: '10'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '2'
+              - column:
+                  name: category_id
+                  value: '7'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '3'
+              - column:
+                  name: category_id
+                  value: '7'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '4'
+              - column:
+                  name: category_id
+                  value: '7'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '5'
+              - column:
+                  name: category_id
+                  value: '10'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '6'
+              - column:
+                  name: category_id
+                  value: '9'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '7'
+              - column:
+                  name: category_id
+                  value: '8'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '8'
+              - column:
+                  name: category_id
+                  value: '8'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '9'
+              - column:
+                  name: category_id
+                  value: '10'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '10'
+              - column:
+                  name: category_id
+                  value: '7'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '11'
+              - column:
+                  name: category_id
+                  value: '8'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '12'
+              - column:
+                  name: category_id
+                  value: '9'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '13'
+              - column:
+                  name: category_id
+                  value: '10'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '14'
+              - column:
+                  name: category_id
+                  value: '8'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '15'
+              - column:
+                  name: category_id
+                  value: '8'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '16'
+              - column:
+                  name: category_id
+                  value: '10'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '17'
+              - column:
+                  name: category_id
+                  value: '10'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '18'
+              - column:
+                  name: category_id
+                  value: '10'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '19'
+              - column:
+                  name: category_id
+                  value: '10'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '20'
+              - column:
+                  name: category_id
+                  value: '7'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '21'
+              - column:
+                  name: category_id
+                  value: '9'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '22'
+              - column:
+                  name: category_id
+                  value: '10'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '23'
+              - column:
+                  name: category_id
+                  value: '9'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '24'
+              - column:
+                  name: category_id
+                  value: '8'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '25'
+              - column:
+                  name: category_id
+                  value: '10'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '26'
+              - column:
+                  name: category_id
+                  value: '7'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '27'
+              - column:
+                  name: category_id
+                  value: '10'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '28'
+              - column:
+                  name: category_id
+                  value: '7'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '29'
+              - column:
+                  name: category_id
+                  value: '10'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '30'
+              - column:
+                  name: category_id
+                  value: '10'
+
+
+
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '1'
+              - column:
+                  name: category_id
+                  value: '12'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '2'
+              - column:
+                  name: category_id
+                  value: '11'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '3'
+              - column:
+                  name: category_id
+                  value: '11'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '4'
+              - column:
+                  name: category_id
+                  value: '11'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '5'
+              - column:
+                  name: category_id
+                  value: '12'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '6'
+              - column:
+                  name: category_id
+                  value: '12'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '7'
+              - column:
+                  name: category_id
+                  value: '12'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '8'
+              - column:
+                  name: category_id
+                  value: '12'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '9'
+              - column:
+                  name: category_id
+                  value: '13'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '10'
+              - column:
+                  name: category_id
+                  value: '12'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '11'
+              - column:
+                  name: category_id
+                  value: '11'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '12'
+              - column:
+                  name: category_id
+                  value: '13'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '13'
+              - column:
+                  name: category_id
+                  value: '12'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '14'
+              - column:
+                  name: category_id
+                  value: '11'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '15'
+              - column:
+                  name: category_id
+                  value: '12'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '16'
+              - column:
+                  name: category_id
+                  value: '11'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '17'
+              - column:
+                  name: category_id
+                  value: '12'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '18'
+              - column:
+                  name: category_id
+                  value: '11'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '19'
+              - column:
+                  name: category_id
+                  value: '11'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '20'
+              - column:
+                  name: category_id
+                  value: '11'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '21'
+              - column:
+                  name: category_id
+                  value: '11'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '22'
+              - column:
+                  name: category_id
+                  value: '11'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '23'
+              - column:
+                  name: category_id
+                  value: '11'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '24'
+              - column:
+                  name: category_id
+                  value: '13'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '25'
+              - column:
+                  name: category_id
+                  value: '12'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '26'
+              - column:
+                  name: category_id
+                  value: '11'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '27'
+              - column:
+                  name: category_id
+                  value: '12'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '28'
+              - column:
+                  name: category_id
+                  value: '12'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '29'
+              - column:
+                  name: category_id
+                  value: '11'
+        - insert:
+            tableName: product_has_category
+            columns:
+              - column:
+                  name: product_id
+                  value: '30'
+              - column:
+                  name: category_id
+                  value: '12'

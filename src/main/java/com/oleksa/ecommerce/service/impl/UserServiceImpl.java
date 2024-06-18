@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void createUser(User user) {
-        if (repository.existsByUsername(user.getUsername())) {
+        if (repository.existsByEmail(user.getUsername())) {
             throw new UserAlreadyExistException("User with the same username already exists.");
         }
         if (repository.existsByEmail(user.getEmail())) {
@@ -58,8 +58,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
      * @return user
      */
     @Override
-    public UserDto fetchUserByUsername(String username) {
-        User user = repository.findByUsername(username).orElseThrow(
+    public UserDto fetchUserByUsername(String email) {
+        User user = repository.findByEmail(email).orElseThrow(
                 () -> new UsernameNotFoundException("User is not found")
         );
 
@@ -67,8 +67,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public boolean updateUser(String username, UserDto userDto) {
-        User user = repository.findByUsername(username)
+    public boolean updateUser(String email, UserDto userDto) {
+        User user = repository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         user.setFirstName(userDto.getFirstName());
@@ -81,8 +81,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public boolean updatePassword(String username, String oldPassword, String newPassword) {
-        User user = repository.findByUsername(username)
+    public boolean updatePassword(String email, String oldPassword, String newPassword) {
+        User user = repository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         if (passwordEncoder.matches(oldPassword, user.getPassword())) {
@@ -95,11 +95,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public boolean confirmUserAccount(String token) {
-        String username = jwtService.extractUserName(token);
-        log.info("Username from token: {}", username);
+        String email = jwtService.extractUserName(token);
+        log.info("Username from token: {}", email);
 
-        User user = repository.findByUsername(username).orElseThrow(
-                () -> new ResourceNotFoundException("User", "username", username)
+        User user = repository.findByEmail(email).orElseThrow(
+                () -> new ResourceNotFoundException("User", "email", email)
         );
 
         user.setVerified(true);
@@ -119,9 +119,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return repository.findByUsername(username).orElseThrow(
-                () -> new UsernameNotFoundException("User with username " + username + " not found")
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return repository.findByEmail(email).orElseThrow(
+                () -> new UsernameNotFoundException("User with email " + email + " not found")
         );
     }
 

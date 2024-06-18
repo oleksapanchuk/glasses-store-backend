@@ -13,5 +13,5 @@ public class ProductDto {
     private Double price;
     private Integer unitsInStock;
     private String imageUrl;
-    private Boolean active;
+    private Boolean available;
 }

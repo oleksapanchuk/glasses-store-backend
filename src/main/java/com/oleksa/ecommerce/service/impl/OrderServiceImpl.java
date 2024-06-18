@@ -28,6 +28,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -58,10 +59,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderDto createOrder(String username, PurchaseRequest purchase) {
+    public OrderDto createOrder(String email, PurchaseRequest purchase) {
 
-        User user = userRepository.findByUsername(username).orElseThrow(
-                () -> new ResourceNotFoundException("User", "username", username)
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new ResourceNotFoundException("User", "email", email)
         );
 
         if (purchase == null) {
@@ -83,10 +84,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto fetchOrderById(String username, Long orderId) {
+    public OrderDto fetchOrderById(String email, Long orderId) {
 
-        User user = userRepository.findByUsername(username).orElseThrow(
-                () -> new ResourceNotFoundException("User", "username", username)
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new ResourceNotFoundException("User", "email", email)
         );
 
         Order order = orderRepository.findById(orderId).orElseThrow(
@@ -101,10 +102,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto fetchOrderByTrackingNumber(String username, String orderTrackingNumber) {
+    public OrderDto fetchOrderByTrackingNumber(String email, String orderTrackingNumber) {
 
-        User user = userRepository.findByUsername(username).orElseThrow(
-                () -> new ResourceNotFoundException("User", "username", username)
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new ResourceNotFoundException("User", "email", email)
         );
 
         Order order = orderRepository.findByOrderTrackingNumber(orderTrackingNumber).orElseThrow(
@@ -130,10 +131,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDetailsResponse fetchOrderDetails(String username, Long orderId) {
+    public OrderDetailsResponse fetchOrderDetails(String email, Long orderId) {
 
-        User user = userRepository.findByUsername(username).orElseThrow(
-                () -> new ResourceNotFoundException("User", "username", username)
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new ResourceNotFoundException("User", "username", email)
         );
 
         Order order = orderRepository.findById(orderId).orElseThrow(
@@ -199,7 +200,7 @@ public class OrderServiceImpl implements OrderService {
 
         return OrderItemResponse.builder()
                 .id(orderItem.getId())
-                .unitPrice(orderItem.getUnitPrice())
+                .unitPrice(BigDecimal.valueOf(1.1))
                 .quantity(orderItem.getQuantity())
                 .product(productDto)
                 .orderId(orderItem.getOrder().getId())

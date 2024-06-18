@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: 6
+      author: Oleksandr Panchuk
+      changes:
+        - createTable:
+            tableName: orders
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_orders_users
+                    references: users(id)
+              - column:
+                  name: tracking_number
+                  type: varchar(100)
+              - column:
+                  name: total_quantity
+                  type: int
+              - column:
+                  name: total_price
+                  type: decimal(10,2)
+              - column:
+                  name: status
+                  type: varchar(100)
+              - column:
+                  name: date_created
+                  type: datetime(6)
+              - column:
+                  name: address_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_orders_addresses
+                    references: addresses(id)
+            remarks: 'Table for storing orders information'

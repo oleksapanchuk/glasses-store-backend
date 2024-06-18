@@ -54,7 +54,7 @@ public class ProductControllerTest {
                 .price(100.0)
                 .unitsInStock(10)
                 .imageUrl("test-image.jpg")
-                .active(true)
+                .available(true)
                 .build();
         productRequest = ProductDetailsRequest.builder()
                 .id(1L)
