@@ -1,35 +1,23 @@
-server:
-  port: 8080
-  ssl:
-    enabled: true
-    key-alias: "oleksapanchuk"
-    key-store: classpath:oleksapanchuk-keystore.p12
-    key-store-password: "secret"
-    key-store-type: "PKCS12"
-
 spring:
   application:
     name: "Panorama"
   datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: "jdbc:mysql://mysql:3306/panorama-shop"
     username: "root"
     password: "1111"
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
-#  jpa:
-#    show-sql: true
-#    properties:
-#      hibernate:
-#        format_sql: true
-
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
   liquibase:
-    change-log: classpath:db/changelog/db.changelog-master.yaml
-
+    change-log: db/changelog/db.changelog-master.yaml
   data:
     rest:
       detection-strategy: annotated
       base-path: "/api"
-
   mail:
     host: smtp.gmail.com
     port: 587
@@ -48,6 +36,15 @@ spring:
           connectiontimeout: 1000
           timeout: 1000
           writetimeout: 1000
+
+server:
+  port: 8080
+  ssl:
+    enabled: true
+    key-alias: "oleksapanchuk"
+    key-store: classpath:oleksapanchuk-keystore.p12
+    key-store-password: "secret"
+    key-store-type: "PKCS12"
 
 allowed:
   origins: "http://localhost:4200"
