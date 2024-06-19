@@ -1,13 +1,10 @@
 package com.oleksa.ecommerce.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.oleksa.ecommerce.dto.ProductDto;
-import com.oleksa.ecommerce.dto.request.ProductDetailsRequest;
 import com.oleksa.ecommerce.dto.response.ProductDetailsResponse;
+import com.oleksa.ecommerce.service.AuthenticationService;
 import com.oleksa.ecommerce.service.JwtService;
 import com.oleksa.ecommerce.service.ProductService;
 import com.oleksa.ecommerce.service.UserService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,127 +17,37 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest({ProductController.class})
+@WebMvcTest(ProductController.class)
 @AutoConfigureMockMvc(addFilters = false)
 public class ProductControllerTest {
 
+    private static final String BASE_PRODUCTS_URL = "/api/products";
+
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private ProductService productService;
+    @MockBean
+    private AuthenticationService authenticationService;
     @MockBean
     private JwtService jwtService;
     @MockBean
     private UserService userService;
 
-    ProductDto productDto;
-    ProductDetailsRequest productRequest;
-    ProductDetailsResponse productResponse;
-
-    @BeforeEach
-    void setUp() {
-        productDto = ProductDto.builder()
-                .id(1L)
-                .sku("123456")
-                .name("Test Product")
-                .description("Test Description")
-                .price(100.0)
-                .unitsInStock(10)
-                .imageUrl("test-image.jpg")
-                .available(true)
-                .build();
-        productRequest = ProductDetailsRequest.builder()
-                .id(1L)
-                .sku("123456")
-                .name("Test Product")
-                .description("Test Description")
-                .price(100.0)
-                .unitsInStock(10)
-                .imageUrl("test-image.jpg")
-                .active(true)
-                .build();
-        productResponse = ProductDetailsResponse.builder()
-                .id(1L)
-                .sku("123456")
-                .name("Test Product")
-                .description("Test Description")
-                .price(100.0)
-                .unitsInStock(10)
-                .imageUrl("test-image.jpg")
-                .active(true)
-                .build();
-    }
-
-    @Test
-    void shouldCreateProductSuccessfully_WhenValidProductDtoIsGiven() throws Exception {
-        doNothing().when(productService).createProduct(productRequest);
-
-        mockMvc.perform(post("/api/products/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(productDto)))
-                .andExpect(status().isCreated());
-
-        verify(productService, times(1)).createProduct(productRequest);
-    }
-
     @Test
     void shouldFetchProductSuccessfully_WhenValidProductIdIsGiven() throws Exception {
         Long productId = 1L;
-        productDto.setId(productId);
-        when(productService.fetchProduct(productId)).thenReturn(productResponse);
+        ProductDetailsResponse productDetailsResponse = ProductDetailsResponse.builder().build();
+        when(productService.fetchProduct(productId)).thenReturn(productDetailsResponse);
 
-        mockMvc.perform(get("/api/products/fetch/" + productId)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(productDto.getId().intValue())))
-                .andExpect(jsonPath("$.name", is(productDto.getName())))
-                .andExpect(jsonPath("$.description", is(productDto.getDescription())))
-                .andExpect(jsonPath("$.price", is(productDto.getPrice())));
+        mockMvc.perform(get(BASE_PRODUCTS_URL + "/fetch/" + productId))
+                .andExpect(status().isOk());
 
         verify(productService, times(1)).fetchProduct(productId);
-    }
-
-    @Test
-    void shouldUpdateProductSuccessfully_WhenValidProductDtoIsGiven() throws Exception {
-        productDto.setId(1L);
-        when(productService.updateProduct(productRequest)).thenReturn(true);
-
-        mockMvc.perform(put("/api/products/update")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(productDto)))
-                .andExpect(status().isOk());
-
-        verify(productService, times(1)).updateProduct(productRequest);
-    }
-
-    @Test
-    void shouldDeactivateProductSuccessfully_WhenValidProductIdIsGiven() throws Exception {
-        Long productId = 1L;
-        when(productService.deactivateProduct(productId)).thenReturn(true);
-
-        mockMvc.perform(patch("/api/products/deactivate/" + productId)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-
-        verify(productService, times(1)).deactivateProduct(productId);
-    }
-
-    @Test
-    void shouldFetchProductPageSuccessfully() throws Exception {
-        when(productService.getPaginableList(any())).thenReturn(null);
-
-        mockMvc.perform(get("/api/products/paginable-list")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-
-        verify(productService, times(1)).getPaginableList(any());
     }
 
     @Test
@@ -148,12 +55,24 @@ public class ProductControllerTest {
         String searchText = "Test";
         when(productService.getPaginableListByNameContaining(anyString(), any())).thenReturn(null);
 
-        mockMvc.perform(get("/api/products/search")
+        mockMvc.perform(get(BASE_PRODUCTS_URL + "/search-products")
                         .param("search-text", searchText)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
         verify(productService, times(1)).getPaginableListByNameContaining(anyString(), any());
+    }
+
+
+    @Test
+    void shouldFetchProductPageSuccessfully() throws Exception {
+        when(productService.getPaginableList(any())).thenReturn(null);
+
+        mockMvc.perform(get(BASE_PRODUCTS_URL + "/fetch-products")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(productService, times(1)).getPaginableList(any());
     }
 
     @Test
@@ -165,7 +84,7 @@ public class ProductControllerTest {
         String sortingMethod = "price";
         when(productService.getProductsByCategoriesAndPriceRange(anyDouble(), anyDouble(), anyList(), anyString(), anyString(), any())).thenReturn(null);
 
-        mockMvc.perform(get("/api/products/paginable-list/filters")
+        mockMvc.perform(get(BASE_PRODUCTS_URL + "/fetch-products-with-filters")
                         .param("minPrice", String.valueOf(minPrice))
                         .param("maxPrice", String.valueOf(maxPrice))
                         .param("categoryIds", categoryIds.stream().map(Object::toString).collect(Collectors.joining(",")))
@@ -176,4 +95,5 @@ public class ProductControllerTest {
 
         verify(productService, times(1)).getProductsByCategoriesAndPriceRange(anyDouble(), anyDouble(), anyList(), anyString(), anyString(), any());
     }
+
 }

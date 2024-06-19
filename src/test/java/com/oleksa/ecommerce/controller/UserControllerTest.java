@@ -28,6 +28,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 public class UserControllerTest {
 
+    private static final String BASE_USERS_URL = "/api/users";
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -39,18 +41,18 @@ public class UserControllerTest {
     private EmailService emailService;
 
 
-    private String username;
+    private String email;
     private UserDto userDto;
 
     @BeforeEach
     void setUp() {
         userDto = UserDto.builder()
                 .id(1L)
-                .username("testUser")
+                .email("test@gmail.com")
                 .build();
 
-        username = "testUser";
-        Authentication auth = new TestingAuthenticationToken(username, null);
+        email = "test@gmail.com";
+        Authentication auth = new TestingAuthenticationToken(email, null);
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
 
@@ -59,26 +61,26 @@ public class UserControllerTest {
         Long userId = 1L;
         when(userService.fetchUserById(userId)).thenReturn(userDto);
 
-        mockMvc.perform(get("/api/users/" + userId)
+        mockMvc.perform(get(BASE_USERS_URL + "/" + userId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(userDto.getId().intValue())))
-                .andExpect(jsonPath("$.username", is(userDto.getUsername())));
+                .andExpect(jsonPath("$.email", is(userDto.getEmail())));
 
         verify(userService, times(1)).fetchUserById(userId);
     }
 
     @Test
     void shouldUpdateUserSuccessfully_WhenValidUserDtoIsGiven() throws Exception {
-        userDto.setUsername("updatedUser");
-        when(userService.updateUser(username, userDto)).thenReturn(true);
+        userDto.setEmail("updateduser@gmail.com");
+        when(userService.updateUser(email, userDto)).thenReturn(true);
 
-        mockMvc.perform(patch("/api/users/update")
+        mockMvc.perform(patch(BASE_USERS_URL + "/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(userDto)))
                 .andExpect(status().isOk());
 
-        verify(userService, times(1)).updateUser(username, userDto);
+        verify(userService, times(1)).updateUser(email, userDto);
     }
 
     @Test
@@ -86,27 +88,27 @@ public class UserControllerTest {
         PasswordUpdateRequest passwordUpdateRequest = new PasswordUpdateRequest();
         passwordUpdateRequest.setOldPassword("oldPassword");
         passwordUpdateRequest.setNewPassword("newPassword");
-        when(userService.updatePassword(username, passwordUpdateRequest.getOldPassword(), passwordUpdateRequest.getNewPassword())).thenReturn(true);
+        when(userService.updatePassword(email, passwordUpdateRequest.getOldPassword(), passwordUpdateRequest.getNewPassword())).thenReturn(true);
 
-        mockMvc.perform(put("/api/users/update-password")
+        mockMvc.perform(put(BASE_USERS_URL + "/update-password")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(passwordUpdateRequest)))
                 .andExpect(status().isOk());
 
-        verify(userService, times(1)).updatePassword(username, passwordUpdateRequest.getOldPassword(), passwordUpdateRequest.getNewPassword());
+        verify(userService, times(1)).updatePassword(email, passwordUpdateRequest.getOldPassword(), passwordUpdateRequest.getNewPassword());
     }
 
     @Test
     void shouldSendEmailConfirmationSuccessfully_WhenValidEmailIsGiven() throws Exception {
         String email = "test@example.com";
-        when(emailService.sendConfirmationEmail(username, email)).thenReturn(true);
+        when(emailService.sendConfirmationEmail(email)).thenReturn(true);
 
-        mockMvc.perform(get("/api/users/send-email-confirmation")
+        mockMvc.perform(get(BASE_USERS_URL + "/send-email-confirmation")
                         .param("email", email)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        verify(emailService, times(1)).sendConfirmationEmail(username, email);
+        verify(emailService, times(1)).sendConfirmationEmail(email);
     }
 
     @Test
@@ -114,7 +116,7 @@ public class UserControllerTest {
         String token = "validToken";
         when(userService.confirmUserAccount(token)).thenReturn(true);
 
-        mockMvc.perform(post("/api/users/confirm-account")
+        mockMvc.perform(get(BASE_USERS_URL + "/confirm-account")
                         .param("token", token)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());

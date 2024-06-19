@@ -4,7 +4,6 @@ import com.oleksa.ecommerce.entity.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
@@ -25,7 +24,6 @@ public class UserRepositoryTest {
     @BeforeEach
     void setUp() {
         user = User.builder()
-                .username("testUser")
                 .email("test@email.com")
                 .password("password")
                 .build();
@@ -52,7 +50,7 @@ public class UserRepositoryTest {
         entityManager.flush();
 
         // when
-        Optional<User> found = userRepository.findByUsername(user.getUsername());
+        Optional<User> found = userRepository.findByEmail(user.getUsername());
 
         // then
         assertThat(found).isPresent();
@@ -66,7 +64,7 @@ public class UserRepositoryTest {
         entityManager.flush();
 
         // when
-        boolean exists = userRepository.existsByUsername(user.getUsername());
+        boolean exists = userRepository.existsByEmail(user.getUsername());
 
         // then
         assertThat(exists).isTrue();

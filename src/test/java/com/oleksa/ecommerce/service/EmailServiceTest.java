@@ -1,5 +1,6 @@
 package com.oleksa.ecommerce.service;
 
+import com.oleksa.ecommerce.entity.Role;
 import com.oleksa.ecommerce.entity.User;
 import com.oleksa.ecommerce.exception.ResourceNotFoundException;
 import com.oleksa.ecommerce.exception.UnauthorizedAccessException;
@@ -30,60 +31,29 @@ public class EmailServiceTest {
     private JavaMailSender emailSender;
 
     @Test
-    void shouldSendConfirmationEmailSuccessfully_WhenValidUsernameAndEmailAreGiven() {
-        String username = "testUser";
+    void shouldSendConfirmationEmailSuccessfully_WhenValidEmailIsGiven() {
         String email = "test@example.com";
         User user = new User();
-        user.setUsername(username);
         user.setEmail(email);
-        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
         when(jwtService.generateToken(user, false)).thenReturn("token");
 
-        boolean result = emailService.sendConfirmationEmail(username, email);
+        boolean result = emailService.sendConfirmationEmail(email);
 
         assertTrue(result);
-        verify(userRepository, times(1)).findByUsername(username);
+        verify(userRepository, times(1)).findByEmail(email);
         verify(jwtService, times(1)).generateToken(user, false);
     }
 
     @Test
-    void shouldThrowResourceNotFoundException_WhenUserNotFound() {
-        String username = "testUser";
-        String email = "test@example.com";
-        when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
+    void shouldThrowResourceNotFoundException_WhenUserNotFoundOnConfirmationEmail() {
+        String email = "nonExistingEmail@example.com";
 
-        assertThrows(ResourceNotFoundException.class, () -> emailService.sendConfirmationEmail(username, email));
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
 
-        verify(userRepository, times(1)).findByUsername(username);
-    }
+        assertThrows(ResourceNotFoundException.class, () -> emailService.sendConfirmationEmail(email));
 
-    @Test
-    void shouldReturnFalse_WhenEmailDoesNotMatchUserEmail() {
-        String username = "testUser";
-        String email = "test@example.com";
-        User user = new User();
-        user.setUsername(username);
-        user.setEmail("differentEmail@example.com");
-        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
-
-        boolean result = emailService.sendConfirmationEmail(username, email);
-
-        assertFalse(result);
-        verify(userRepository, times(1)).findByUsername(username);
-    }
-
-    @Test
-    void shouldThrowUnauthorizedAccessException_WhenUsernameDoesNotMatchUserUsername() {
-        String username = "testUser";
-        String email = "test@example.com";
-        User user = new User();
-        user.setUsername("differentUsername");
-        user.setEmail(email);
-        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
-
-        assertThrows(UnauthorizedAccessException.class, () -> emailService.sendConfirmationEmail(username, email));
-
-        verify(userRepository, times(1)).findByUsername(username);
+        verify(userRepository, times(1)).findByEmail(email);
     }
 
     @Test

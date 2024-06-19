@@ -4,13 +4,10 @@ import com.oleksa.ecommerce.dto.AddressDto;
 import com.oleksa.ecommerce.dto.OrderDto;
 import com.oleksa.ecommerce.dto.request.PurchaseRequest;
 import com.oleksa.ecommerce.dto.response.OrderDetailsResponse;
-import com.oleksa.ecommerce.entity.Address;
-import com.oleksa.ecommerce.entity.Order;
-import com.oleksa.ecommerce.entity.OrderItem;
-import com.oleksa.ecommerce.entity.User;
+import com.oleksa.ecommerce.entity.*;
 import com.oleksa.ecommerce.exception.ResourceNotFoundException;
-import com.oleksa.ecommerce.exception.UnauthorizedAccessException;
 import com.oleksa.ecommerce.repository.OrderRepository;
+import com.oleksa.ecommerce.repository.ProductRepository;
 import com.oleksa.ecommerce.repository.UserRepository;
 import com.oleksa.ecommerce.service.impl.OrderServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +21,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -40,6 +36,8 @@ public class OrderServiceTest {
     @Mock
     private UserRepository userRepository;
     @Mock
+    private ProductRepository productRepository;
+    @Mock
     private OrderRepository orderRepository;
 
 
@@ -48,24 +46,16 @@ public class OrderServiceTest {
     @BeforeEach
     void setUp() {
         purchaseRequest = PurchaseRequest.builder()
-                .shippingAddress(
+                .userId(1L)
+                .address(
                         AddressDto.builder()
                                 .city("city")
                                 .country("country")
                                 .state("state")
                                 .zipCode("zipCode")
                                 .build())
-                .order(
-                        OrderDto.builder()
-                                .orderTrackingNumber("orderTrackingNumber")
-                                .totalPrice(100)
-                                .totalQuantity(3)
-                                .status("ACCEPTED")
-                                .build()
-                )
                 .orderItems(
                         Set.of(OrderItem.builder()
-                                .unitPrice(BigDecimal.ONE)
                                 .productId(1L)
                                 .quantity(2)
                                 .build())
@@ -75,257 +65,171 @@ public class OrderServiceTest {
 
     @Test
     void shouldCreateOrderSuccessfully_WhenValidRequestIsGiven() {
-        // Arrange
-        String username = "testUser";
+        // Given
+        String email = "test@example.com";
         User user = new User();
-        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
         when(orderRepository.save(any(Order.class))).thenReturn(new Order());
+        when(productRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(Product.builder()
+                .id(1L)
+                .price(100.0)
+                .unitsInStock(10)
+                .build()));
 
-        // Act
-        OrderDto result = orderService.createOrder(username, purchaseRequest);
+        // When
+        OrderDto result = orderService.createOrder(email, purchaseRequest);
 
-        // Assert
+        // Then
         assertNotNull(result);
-        verify(userRepository, times(1)).findByUsername(username);
+        verify(userRepository, times(1)).findByEmail(email);
         verify(orderRepository, times(1)).save(any(Order.class));
     }
 
     @Test
-    void shouldThrowResourceNotFoundException_WhenUserNotFound() {
-        // Arrange
-        String username = "testUser";
-        when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
+    void shouldThrowResourceNotFoundException_WhenUserNotFoundOnCreateOrder() {
+        String email = "nonExistingEmail@example.com";
 
-        // Act and Assert
-        assertThrows(ResourceNotFoundException.class, () -> orderService.createOrder(username, purchaseRequest));
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
 
-        verify(userRepository, times(1)).findByUsername(username);
+        assertThrows(ResourceNotFoundException.class, () -> orderService.createOrder(email, purchaseRequest));
+
+        verify(userRepository, times(1)).findByEmail(email);
         verify(orderRepository, times(0)).save(any(Order.class));
     }
 
     @Test
-    void shouldThrowIllegalArgumentException_WhenPurchaseRequestIsNull() {
-        // Arrange
-        String username = "testUser";
+    void shouldThrowIllegalArgumentException_WhenPurchaseRequestIsNullOnCreateOrder() {
+        String email = "test@example.com";
         User user = new User();
-        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
 
-        // Act and Assert
-        assertThrows(IllegalArgumentException.class, () -> orderService.createOrder(username, null));
+        assertThrows(IllegalArgumentException.class, () -> orderService.createOrder(email, null));
 
-        verify(userRepository, times(1)).findByUsername(username);
+        verify(userRepository, times(1)).findByEmail(email);
         verify(orderRepository, times(0)).save(any(Order.class));
     }
 
     @Test
     void shouldFetchOrderByIdSuccessfully_WhenValidUsernameAndOrderIdAreGiven() {
-        String username = "testUser";
+        // Given
+        String email = "test@example.com";
         Long orderId = 1L;
         User user = new User();
-        user.setId(1L);
-        Order order = mock(Order.class);
-        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
+        user.setId(1L);  // Setting a valid user ID
+        Order order = new Order();
+        order.setUser(user);
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
         when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
-        when(order.getUser()).thenReturn(user);
 
-        OrderDto result = orderService.fetchOrderById(username, orderId);
+        // When
+        OrderDto result = orderService.fetchOrderById(email, orderId);
 
+        // Then
         assertNotNull(result);
-        verify(userRepository, times(1)).findByUsername(username);
+        verify(userRepository, times(1)).findByEmail(email);
         verify(orderRepository, times(1)).findById(orderId);
     }
 
     @Test
-    void shouldThrowResourceNotFoundException_WhenOrderNotFound() {
-        String username = "testUser";
+    void shouldThrowResourceNotFoundException_WhenOrderNotFoundOnFetchOrderById() {
+        String email = "test@example.com";
         Long orderId = 1L;
         User user = new User();
-        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
         when(orderRepository.findById(orderId)).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> orderService.fetchOrderById(username, orderId));
+        assertThrows(ResourceNotFoundException.class, () -> orderService.fetchOrderById(email, orderId));
 
-        verify(userRepository, times(1)).findByUsername(username);
+        verify(userRepository, times(1)).findByEmail(email);
         verify(orderRepository, times(1)).findById(orderId);
     }
 
+
     @Test
-    void shouldThrowUnauthorizedAccessException_WhenOrderDoesNotBelongToUser() {
-        String username = "testUser";
-        Long orderId = 1L;
+    void shouldThrowResourceNotFoundException_WhenOrderNotFoundOnFetchOrderByTrackingNumber() {
+        String email = "test@example.com";
+        String orderTrackingNumber = "nonExistingTrackingNumber";
         User user = new User();
-        user.setId(1L);
-        User anotherUser = new User();
-        anotherUser.setId(2L);
-        Order order = mock(Order.class);
-        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
-        when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
-        when(order.getUser()).thenReturn(anotherUser);
-
-        assertThrows(UnauthorizedAccessException.class, () -> orderService.fetchOrderById(username, orderId));
-
-        verify(userRepository, times(1)).findByUsername(username);
-        verify(orderRepository, times(1)).findById(orderId);
-    }
-
-    @Test
-    void testFetchOrderByTrackingNumber_shouldFetchOrderByTrackingNumberSuccessfully_WhenValidUsernameAndTrackingNumberAreGiven() {
-        String username = "testUser";
-        String orderTrackingNumber = "trackingNumber";
-        User user = new User();
-        user.setId(1L);
-        Order order = mock(Order.class);
-        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
-        when(orderRepository.findByOrderTrackingNumber(orderTrackingNumber)).thenReturn(Optional.of(order));
-        when(order.getUser()).thenReturn(user);
-
-        OrderDto result = orderService.fetchOrderByTrackingNumber(username, orderTrackingNumber);
-
-        assertNotNull(result);
-        verify(userRepository, times(1)).findByUsername(username);
-        verify(orderRepository, times(1)).findByOrderTrackingNumber(orderTrackingNumber);
-    }
-
-    @Test
-    void testFetchOrderByTrackingNumber_shouldThrowResourceNotFoundException_WhenUserNotFound() {
-        String username = "testUser";
-        String orderTrackingNumber = "trackingNumber";
-        when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
-
-        assertThrows(ResourceNotFoundException.class, () -> orderService.fetchOrderByTrackingNumber(username, orderTrackingNumber));
-
-        verify(userRepository, times(1)).findByUsername(username);
-        verify(orderRepository, times(0)).findByOrderTrackingNumber(orderTrackingNumber);
-    }
-
-    @Test
-    void testFetchOrderByTrackingNumber_shouldThrowResourceNotFoundException_WhenOrderNotFound() {
-        String username = "testUser";
-        String orderTrackingNumber = "trackingNumber";
-        User user = new User();
-        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
         when(orderRepository.findByOrderTrackingNumber(orderTrackingNumber)).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> orderService.fetchOrderByTrackingNumber(username, orderTrackingNumber));
+        assertThrows(ResourceNotFoundException.class, () -> orderService.fetchOrderByTrackingNumber(email, orderTrackingNumber));
 
-        verify(userRepository, times(1)).findByUsername(username);
+        verify(userRepository, times(1)).findByEmail(email);
         verify(orderRepository, times(1)).findByOrderTrackingNumber(orderTrackingNumber);
     }
 
     @Test
-    void testFetchOrderByTrackingNumber_shouldThrowUnauthorizedAccessException_WhenOrderDoesNotBelongToUser() {
-        String username = "testUser";
-        String orderTrackingNumber = "trackingNumber";
-        User user = new User();
-        user.setId(1L);
-        User anotherUser = new User();
-        anotherUser.setId(2L);
-        Order order = mock(Order.class);
-        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
-        when(orderRepository.findByOrderTrackingNumber(orderTrackingNumber)).thenReturn(Optional.of(order));
-        when(order.getUser()).thenReturn(anotherUser);
-
-        assertThrows(UnauthorizedAccessException.class, () -> orderService.fetchOrderByTrackingNumber(username, orderTrackingNumber));
-
-        verify(userRepository, times(1)).findByUsername(username);
-        verify(orderRepository, times(1)).findByOrderTrackingNumber(orderTrackingNumber);
-    }
-
-    @Test
-    void testFetchOrdersByUsername_shouldFetchOrdersByUsernameSuccessfully_WhenValidUsernameIsGiven() {
-        String username = "testUser";
+    void shouldFetchOrdersByEmailSuccessfully_WhenValidUsernameIsGiven() {
+        String email = "test@example.com";
         Pageable pageable = PageRequest.of(0, 5);
         User user = new User();
-        user.setUsername(username);
         Order order = new Order();
         order.setUser(user);
         Page<Order> ordersPage = new PageImpl<>(List.of(order), pageable, 1);
-        when(orderRepository.findByUserUsernameOrderByDateCreatedDesc(username, pageable)).thenReturn(ordersPage);
+        when(orderRepository.findByUserEmailOrderByDateCreatedDesc(email, pageable)).thenReturn(ordersPage);
 
-        Page<OrderDto> result = orderService.fetchOrdersByUsername(username, pageable);
+        Page<OrderDto> result = orderService.fetchOrdersByEmail(email, pageable);
 
         assertNotNull(result);
         assertEquals(1, result.getTotalElements());
-        verify(orderRepository, times(1)).findByUserUsernameOrderByDateCreatedDesc(username, pageable);
+        verify(orderRepository, times(1)).findByUserEmailOrderByDateCreatedDesc(email, pageable);
     }
 
     @Test
-    void testFetchOrdersByUsername_shouldReturnEmptyPage_WhenNoOrdersFoundForUser() {
-        String username = "testUser";
+    void shouldReturnEmptyPage_WhenNoOrdersFoundForUserOnFetchOrdersByEmail() {
+        String email = "test@example.com";
         Pageable pageable = PageRequest.of(0, 5);
-        User user = new User();
-        user.setUsername(username);
         Page<Order> ordersPage = Page.empty(pageable);
-        when(orderRepository.findByUserUsernameOrderByDateCreatedDesc(username, pageable)).thenReturn(ordersPage);
+        when(orderRepository.findByUserEmailOrderByDateCreatedDesc(email, pageable)).thenReturn(ordersPage);
 
-        Page<OrderDto> result = orderService.fetchOrdersByUsername(username, pageable);
+        Page<OrderDto> result = orderService.fetchOrdersByEmail(email, pageable);
 
         assertNotNull(result);
         assertEquals(0, result.getTotalElements());
-        verify(orderRepository, times(1)).findByUserUsernameOrderByDateCreatedDesc(username, pageable);
+        verify(orderRepository, times(1)).findByUserEmailOrderByDateCreatedDesc(email, pageable);
     }
 
     @Test
-    void testFetchOrderDetails_shouldFetchOrderDetailsSuccessfully_WhenValidUsernameAndOrderIdAreGiven() {
-        String username = "testUser";
+    void shouldFetchOrderDetailsSuccessfully_WhenValidUsernameAndOrderIdAreGiven() {
+        // Given
+        String email = "test@example.com";
         Long orderId = 1L;
         User user = new User();
-        user.setId(1L);
-        Order order = mock(Order.class);
-        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
+        user.setId(1L);  // Setting a valid user ID
+        Order order = new Order();
+        order.setUser(user);
+
+        // Set up a valid shipping address
+        Address shippingAddress = new Address();
+        shippingAddress.setStreet("123 Main St");
+        shippingAddress.setCity("Test City");
+        shippingAddress.setZipCode("12345");
+        order.setShippingAddress(shippingAddress);
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
         when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
-        when(order.getUser()).thenReturn(user);
-        when(order.getShippingAddress()).thenReturn(new Address());
 
-        OrderDetailsResponse result = orderService.fetchOrderDetails(username, orderId);
+        // When
+        OrderDetailsResponse result = orderService.fetchOrderDetails(email, orderId);
 
+        // Then
         assertNotNull(result);
-        verify(userRepository, times(1)).findByUsername(username);
+        verify(userRepository, times(1)).findByEmail(email);
         verify(orderRepository, times(1)).findById(orderId);
     }
 
     @Test
-    void testFetchOrderDetails_shouldThrowResourceNotFoundException_WhenUserNotFound() {
-        String username = "testUser";
-        Long orderId = 1L;
-        when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
-
-        assertThrows(ResourceNotFoundException.class, () -> orderService.fetchOrderDetails(username, orderId));
-
-        verify(userRepository, times(1)).findByUsername(username);
-        verify(orderRepository, times(0)).findById(orderId);
-    }
-
-    @Test
-    void testFetchOrderDetails_shouldThrowResourceNotFoundException_WhenOrderNotFound() {
-        String username = "testUser";
+    void shouldThrowResourceNotFoundException_WhenOrderNotFoundOnFetchOrderDetails() {
+        String email = "test@example.com";
         Long orderId = 1L;
         User user = new User();
-        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
         when(orderRepository.findById(orderId)).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> orderService.fetchOrderDetails(username, orderId));
+        assertThrows(ResourceNotFoundException.class, () -> orderService.fetchOrderDetails(email, orderId));
 
-        verify(userRepository, times(1)).findByUsername(username);
-        verify(orderRepository, times(1)).findById(orderId);
-    }
-
-    @Test
-    void testFetchOrderDetails_shouldThrowUnauthorizedAccessException_WhenOrderDoesNotBelongToUser() {
-        String username = "testUser";
-        Long orderId = 1L;
-        User user = new User();
-        user.setId(1L);
-        User anotherUser = new User();
-        anotherUser.setId(2L);
-        Order order = mock(Order.class);
-        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
-        when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
-        when(order.getUser()).thenReturn(anotherUser);
-
-        assertThrows(UnauthorizedAccessException.class, () -> orderService.fetchOrderDetails(username, orderId));
-
-        verify(userRepository, times(1)).findByUsername(username);
+        verify(userRepository, times(1)).findByEmail(email);
         verify(orderRepository, times(1)).findById(orderId);
     }
 

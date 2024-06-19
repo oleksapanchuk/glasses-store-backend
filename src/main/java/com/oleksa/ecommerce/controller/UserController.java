@@ -54,9 +54,9 @@ public class UserController {
     @PatchMapping("/update")
     public ResponseEntity<?> updateUser(@RequestBody UserDto user) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
+        String email = auth.getName();
 
-        boolean isUpdated = userService.updateUser(username, user);
+        boolean isUpdated = userService.updateUser(email, user);
         return isUpdated
                 ?
                 new ResponseEntity<>(Collections.singletonMap("message", "User data is updated successfully"), HttpStatus.OK)
@@ -68,7 +68,10 @@ public class UserController {
     public ResponseEntity<?> updatePassword(
             @RequestBody PasswordUpdateRequest passwordRequest
     ) {
-        boolean isUpdated = userService.updatePassword(passwordRequest.getEmail(), passwordRequest.getOldPassword(), passwordRequest.getNewPassword());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+
+        boolean isUpdated = userService.updatePassword(email, passwordRequest.getOldPassword(), passwordRequest.getNewPassword());
         if (isUpdated) {
             return new ResponseEntity<>(Collections.singletonMap("message", "Password updated successfully"), HttpStatus.OK);
         } else {
@@ -93,7 +96,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/confirm-account")
+    @GetMapping("/confirm-account")
     public ResponseEntity<ResponseDto> confirmAccount(@RequestParam String token) {
 
         boolean isVerified = userService.confirmUserAccount(token);

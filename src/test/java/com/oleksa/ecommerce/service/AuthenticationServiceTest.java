@@ -60,7 +60,6 @@ public class AuthenticationServiceTest {
         request.setPassword("testPassword");
 
         User testUser = new User();
-        testUser.setUsername("testUser");
         testUser.setPassword("testPassword");
 
         when(userDetailsService.loadUserByUsername(anyString())).thenReturn(testUser);
@@ -79,12 +78,10 @@ public class AuthenticationServiceTest {
     public void whenSignUp_thenReturnsJwtAuthenticationResponse() {
         // Arrange
         SignUpRequest request = new SignUpRequest();
-        request.setUsername("testUser");
         request.setEmail("testEmail");
         request.setPassword("testPassword");
 
         User testUser = new User();
-        testUser.setUsername("testUser");
         testUser.setEmail("testEmail");
         testUser.setPassword("testPassword");
 

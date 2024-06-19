@@ -1,7 +1,6 @@
 package com.oleksa.ecommerce.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.oleksa.ecommerce.constants.AppConstants;
 import com.oleksa.ecommerce.dto.JwtAuthenticationResponse;
 import com.oleksa.ecommerce.dto.SignInRequest;
 import com.oleksa.ecommerce.dto.SignUpRequest;
@@ -26,6 +25,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest({AuthController.class})
 @AutoConfigureMockMvc(addFilters = false)
 public class AuthControllerTest {
+
+    private static final String BASE_AUTH_URL = "/api/auth";
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -39,13 +41,12 @@ public class AuthControllerTest {
     @Test
     void shouldSignUpSuccessfully_WhenValidSignUpRequestIsGiven() throws Exception {
         SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("testUser");
         signUpRequest.setEmail("test@example.com");
         signUpRequest.setPassword("password");
         JwtAuthenticationResponse expectedResponse = new JwtAuthenticationResponse("validToken", "Bearer");
         when(authenticationService.signUp(signUpRequest)).thenReturn(expectedResponse);
 
-        mockMvc.perform(post("/api/auth/sign-up")
+        mockMvc.perform(post(BASE_AUTH_URL + "/sign-up")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(signUpRequest)))
                 .andExpect(status().isOk())
@@ -62,7 +63,7 @@ public class AuthControllerTest {
         JwtAuthenticationResponse expectedResponse = new JwtAuthenticationResponse("validToken", "Bearer");
         when(authenticationService.signIn(signInRequest)).thenReturn(expectedResponse);
 
-        mockMvc.perform(post("/api/auth/sign-in")
+        mockMvc.perform(post(BASE_AUTH_URL + "/sign-in")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(signInRequest)))
                 .andExpect(status().isOk())
@@ -75,7 +76,7 @@ public class AuthControllerTest {
     void shouldSignOutSuccessfully() throws Exception {
         doNothing().when(authenticationService).signOut();
 
-        mockMvc.perform(post("/api/auth/sign-out")
+        mockMvc.perform(post(BASE_AUTH_URL + "/sign-out")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
@@ -89,7 +90,7 @@ public class AuthControllerTest {
         JwtAuthenticationResponse expectedResponse = new JwtAuthenticationResponse("validToken", "Bearer");
         when(authenticationService.refreshToken(tokenRefreshRequest)).thenReturn(expectedResponse);
 
-        mockMvc.perform(post("/api/auth/refresh-token")
+        mockMvc.perform(post(BASE_AUTH_URL + "/refresh-token")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(tokenRefreshRequest)))
                 .andExpect(status().isOk())

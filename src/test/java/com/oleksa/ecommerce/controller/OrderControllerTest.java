@@ -31,6 +31,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 public class OrderControllerTest {
 
+    private final String BASE_ORDERS_URL = "/api/orders";
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -59,7 +61,7 @@ public class OrderControllerTest {
                 .build();
         when(orderService.fetchOrderById(username, orderId)).thenReturn(orderDto);
 
-        mockMvc.perform(get("/api/order/fetch-by-id/" + orderId)
+        mockMvc.perform(get(BASE_ORDERS_URL + "/fetch-by-id/" + orderId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(orderDto.getId().intValue())))
@@ -77,7 +79,7 @@ public class OrderControllerTest {
                 .build();
         when(orderService.fetchOrderByTrackingNumber(username, trackingNumber)).thenReturn(orderDto);
 
-        mockMvc.perform(get("/api/order/fetch-by-tracking-number/" + trackingNumber)
+        mockMvc.perform(get(BASE_ORDERS_URL + "/fetch-by-tracking-number/" + trackingNumber)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(orderDto.getId().intValue())))
@@ -88,13 +90,13 @@ public class OrderControllerTest {
 
     @Test
     void shouldFetchOrdersByUsernameSuccessfully_WhenValidUsernameIsGiven() throws Exception {
-        when(orderService.fetchOrdersByUsername(anyString(), any())).thenReturn(null);
+        when(orderService.fetchOrdersByEmail(anyString(), any())).thenReturn(null);
 
-        mockMvc.perform(get("/api/order/fetch-by-username")
+        mockMvc.perform(get(BASE_ORDERS_URL + "/fetch-by-email")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        verify(orderService, times(1)).fetchOrdersByUsername(username, PageRequest.of(0, 20));
+        verify(orderService, times(1)).fetchOrdersByEmail(username, PageRequest.of(0, 20));
     }
 
     @Test
@@ -106,7 +108,7 @@ public class OrderControllerTest {
                 .build();
         when(orderService.fetchOrderDetails(username, orderId)).thenReturn(orderDetailsResponse);
 
-        mockMvc.perform(get("/api/order/fetch-order-details/" + orderId)
+        mockMvc.perform(get(BASE_ORDERS_URL + "/fetch-order-details/" + orderId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.orderTrackingNumber", is(orderDetailsResponse.getOrderTrackingNumber())));
@@ -123,7 +125,7 @@ public class OrderControllerTest {
                 .build();
         when(orderService.createOrder(username, purchaseRequest)).thenReturn(orderDto);
 
-        mockMvc.perform(post("/api/order/place-order")
+        mockMvc.perform(post(BASE_ORDERS_URL + "/place-order")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(purchaseRequest)))
                 .andExpect(status().isOk())

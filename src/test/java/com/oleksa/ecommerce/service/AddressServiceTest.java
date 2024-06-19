@@ -4,23 +4,21 @@ import com.oleksa.ecommerce.dto.AddressDto;
 import com.oleksa.ecommerce.entity.Address;
 import com.oleksa.ecommerce.entity.User;
 import com.oleksa.ecommerce.exception.ResourceNotFoundException;
-import com.oleksa.ecommerce.exception.UnauthorizedAccessException;
-import com.oleksa.ecommerce.mapper.AddressMapper;
 import com.oleksa.ecommerce.repository.AddressRepository;
 import com.oleksa.ecommerce.repository.UserRepository;
 import com.oleksa.ecommerce.service.impl.AddressServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,193 +33,128 @@ public class AddressServiceTest {
     @Mock
     private UserRepository userRepository;
 
-    private AddressDto addressDto;
-
-    @BeforeEach
-    void setup() {
-        addressDto = AddressDto.builder()
-                .id(1L)
-                .city("testCity")
-                .country("testCountry")
-                .street("testStreet")
-                .zipCode("testZipCode")
-                .build();
-    }
-
     @Test
-    void shouldCreateAddressSuccessfully() {
-        Address address = AddressMapper.mapToAddress(addressDto);
-        User user = new User();
-        user.setUsername("testUsername");
-
-        when(userRepository.findByUsername(any())).thenReturn(Optional.of(user));
-        when(addressRepository.save(any())).thenReturn(address);
-
-        AddressDto result = addressService.createAddress("testUsername", addressDto);
-
-        assertNotNull(result);
-        assertEquals(addressDto, result);
-    }
-
-    @Test
-    void shouldThrowExceptionWhenUserNotFoundOnCreateAddress() {
-        when(userRepository.findByUsername(any())).thenReturn(Optional.empty());
-
-        assertThrows(ResourceNotFoundException.class,
-                () -> addressService.createAddress("testUsername", addressDto)
-        );
-    }
-
-    @Test
-    void shouldFetchAddressSuccessfully() {
-        Address address = AddressMapper.mapToAddress(addressDto);
-        User user = new User();
-        user.setUsername("testUsername");
-        user.setId(1L);
-        address.setUser(user);
-
-        when(userRepository.findByUsername(any())).thenReturn(Optional.of(user));
-        when(addressRepository.findById(anyLong())).thenReturn(Optional.of(address));
-
-        AddressDto result = addressService.fetchAddress("testUsername", 1L);
-
-        assertNotNull(result);
-        assertEquals(addressDto, result);
-    }
-
-    @Test
-    void shouldThrowExceptionWhenUserNotFoundOnFetchAddress() {
-        when(userRepository.findByUsername(any())).thenReturn(Optional.empty());
-
-        assertThrows(ResourceNotFoundException.class,
-                () -> addressService.fetchAddress("testUsername", 1L)
-        );
-    }
-
-    @Test
-    void shouldThrowExceptionWhenAddressNotFoundOnFetchAddress() {
-        User user = new User();
-        user.setUsername("testUsername");
-
-        when(userRepository.findByUsername(any())).thenReturn(Optional.of(user));
-        when(addressRepository.findById(anyLong())).thenReturn(Optional.empty());
-
-        assertThrows(ResourceNotFoundException.class, () -> addressService.fetchAddress("testUsername", 1L));
-    }
-
-    @Test
-    void shouldThrowExceptionWhenUnauthorizedAccessOnFetchAddress() {
-        Address address = AddressMapper.mapToAddress(addressDto);
-        User user = new User();
-        user.setUsername("testUsername");
-        user.setId(1L);
+    void shouldFetchAddressesByUserIdSuccessfully_WhenAddressesExist() {
+        Long userId = 1L;
+        List<Address> addresses = new ArrayList<>();
+        Address address = new Address();
         address.setUser(new User());
-        address.getUser().setId(2L);
+        addresses.add(address);
+        when(addressRepository.findAllByUserId(userId)).thenReturn(addresses);
 
-        when(userRepository.findByUsername(any())).thenReturn(Optional.of(user));
-        when(addressRepository.findById(anyLong())).thenReturn(Optional.of(address));
+        List<AddressDto> result = addressService.fetchAddressesByUserId(userId);
 
-        assertThrows(UnauthorizedAccessException.class,
-                () -> addressService.fetchAddress("testUsername", 1L)
-        );
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
     }
 
     @Test
-    void shouldUpdateAddressSuccessfully() {
-        Address address = AddressMapper.mapToAddress(addressDto);
+    void shouldReturnEmptyList_WhenNoAddressesExistForUser() {
+        Long userId = 1L;
+        when(addressRepository.findAllByUserId(userId)).thenReturn(null);
+
+        List<AddressDto> result = addressService.fetchAddressesByUserId(userId);
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void shouldFetchAddressSuccessfully_WhenAddressExists() {
+        Long addressId = 1L;
+        Address address = new Address();
+        address.setUser(new User());
+        when(addressRepository.findById(addressId)).thenReturn(Optional.of(address));
+
+        AddressDto result = addressService.fetchAddress(addressId);
+
+        assertNotNull(result);
+    }
+
+    @Test
+    void shouldThrowResourceNotFoundException_WhenAddressDoesNotExist() {
+        Long addressId = 1L;
+        when(addressRepository.findById(addressId)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> addressService.fetchAddress(addressId));
+    }
+
+    @Test
+    void shouldCreateAddressSuccessfully_WhenValidAddressDtoIsGiven() {
+        AddressDto addressDto = AddressDto.builder().build();
+        addressDto.setUserId(1L);
         User user = new User();
-        user.setUsername("testUsername");
-        user.setId(1L);
+        Address address = new Address();
+        when(userRepository.findById(addressDto.getUserId())).thenReturn(Optional.of(user));
+        when(addressRepository.save(any(Address.class))).thenReturn(address);
+
+        AddressDto result = addressService.createAddress(addressDto);
+
+        assertNotNull(result);
+    }
+
+    @Test
+    void shouldThrowResourceNotFoundException_WhenUserDoesNotExistOnCreateAddress() {
+        AddressDto addressDto = AddressDto.builder().build();
+        addressDto.setUserId(1L);
+        when(userRepository.findById(addressDto.getUserId())).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> addressService.createAddress(addressDto));
+    }
+
+    @Test
+    void shouldUpdateAddressSuccessfully_WhenValidAddressDtoIsGiven() {
+        AddressDto addressDto = AddressDto.builder().build();
+        addressDto.setUserId(1L);
+        addressDto.setId(1L);
+        User user = new User();
+        Address address = new Address();
         address.setUser(user);
+        when(userRepository.findById(addressDto.getUserId())).thenReturn(Optional.of(user));
+        when(addressRepository.findById(addressDto.getId())).thenReturn(Optional.of(address));
+        when(addressRepository.save(any(Address.class))).thenReturn(address);
 
-        when(userRepository.findByUsername(any())).thenReturn(Optional.of(user));
-        when(addressRepository.findById(anyLong())).thenReturn(Optional.of(address));
-        when(addressRepository.save(any())).thenReturn(address);
+        AddressDto result = addressService.updateAddress(addressDto);
 
-        boolean result = addressService.updateAddress("testUsername", addressDto);
+        assertNotNull(result);
+    }
+
+    @Test
+    void shouldThrowResourceNotFoundException_WhenUserDoesNotExistOnUpdateAddress() {
+        AddressDto addressDto = AddressDto.builder().build();
+        addressDto.setUserId(1L);
+        when(userRepository.findById(addressDto.getUserId())).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> addressService.updateAddress(addressDto));
+    }
+
+    @Test
+    void shouldThrowResourceNotFoundException_WhenAddressDoesNotExistOnUpdateAddress() {
+        AddressDto addressDto = AddressDto.builder().build();
+        addressDto.setUserId(1L);
+        addressDto.setId(1L);
+        User user = new User();
+        when(userRepository.findById(addressDto.getUserId())).thenReturn(Optional.of(user));
+        when(addressRepository.findById(addressDto.getId())).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> addressService.updateAddress(addressDto));
+    }
+
+    @Test
+    void shouldDeleteAddressSuccessfully_WhenAddressExists() {
+        Long addressId = 1L;
+        when(addressRepository.existsById(addressId)).thenReturn(true);
+
+        boolean result = addressService.deleteAddress(addressId);
 
         assertTrue(result);
     }
 
     @Test
-    void shouldThrowExceptionWhenUserNotFoundOnUpdateAddress() {
-        when(userRepository.findByUsername(any())).thenReturn(Optional.empty());
+    void shouldThrowResourceNotFoundException_WhenAddressDoesNotExistOnDelete() {
+        Long addressId = 1L;
+        when(addressRepository.existsById(addressId)).thenReturn(false);
 
-        assertThrows(ResourceNotFoundException.class, () -> addressService.updateAddress("testUsername", addressDto));
-    }
-
-    @Test
-    void shouldThrowExceptionWhenAddressNotFoundOnUpdateAddress() {
-        User user = new User();
-        user.setUsername("testUsername");
-
-        when(userRepository.findByUsername(any())).thenReturn(Optional.of(user));
-        when(addressRepository.findById(anyLong())).thenReturn(Optional.empty());
-
-        assertThrows(ResourceNotFoundException.class, () -> addressService.updateAddress("testUsername", addressDto));
-    }
-
-    @Test
-    void shouldThrowExceptionWhenUnauthorizedAccessOnUpdateAddress() {
-        Address address = AddressMapper.mapToAddress(addressDto);
-        User user = new User();
-        user.setUsername("testUsername");
-        user.setId(1L);
-        address.setUser(new User());
-        address.getUser().setId(2L);
-
-        when(userRepository.findByUsername(any())).thenReturn(Optional.of(user));
-        when(addressRepository.findById(anyLong())).thenReturn(Optional.of(address));
-
-        assertThrows(UnauthorizedAccessException.class, () -> addressService.updateAddress("testUsername", addressDto));
-    }
-
-    @Test
-    void shouldDeleteAddressSuccessfully() {
-        Address address = AddressMapper.mapToAddress(addressDto);
-        User user = new User();
-        user.setUsername("testUsername");
-        user.setId(1L);
-        address.setUser(user);
-
-        when(userRepository.findByUsername(any())).thenReturn(Optional.of(user));
-        when(addressRepository.findById(anyLong())).thenReturn(Optional.of(address));
-
-        boolean result = addressService.deleteAddress("testUsername", 1L);
-
-        assertTrue(result);
-    }
-
-    @Test
-    void shouldThrowExceptionWhenUserNotFoundOnDeleteAddress() {
-        when(userRepository.findByUsername(any())).thenReturn(Optional.empty());
-
-        assertThrows(ResourceNotFoundException.class, () -> addressService.deleteAddress("testUsername", 1L));
-    }
-
-    @Test
-    void shouldThrowExceptionWhenAddressNotFoundOnDeleteAddress() {
-        User user = new User();
-        user.setUsername("testUsername");
-
-        when(userRepository.findByUsername(any())).thenReturn(Optional.of(user));
-        when(addressRepository.findById(anyLong())).thenReturn(Optional.empty());
-
-        assertThrows(ResourceNotFoundException.class, () -> addressService.deleteAddress("testUsername", 1L));
-    }
-
-    @Test
-    void shouldThrowExceptionWhenUnauthorizedAccessOnDeleteAddress() {
-        Address address = AddressMapper.mapToAddress(addressDto);
-        User user = new User();
-        user.setUsername("testUsername");
-        user.setId(1L);
-        address.setUser(new User());
-        address.getUser().setId(2L);
-
-        when(userRepository.findByUsername(any())).thenReturn(Optional.of(user));
-        when(addressRepository.findById(anyLong())).thenReturn(Optional.of(address));
-
-        assertThrows(UnauthorizedAccessException.class, () -> addressService.deleteAddress("testUsername", 1L));
+        assertThrows(ResourceNotFoundException.class, () -> addressService.deleteAddress(addressId));
     }
 }
