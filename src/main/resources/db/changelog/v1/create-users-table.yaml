@@ -30,11 +30,11 @@ databaseChangeLog:
               - column:
                   name: verified
                   type: bit(1)
-                  defaultValueBoolean: false
+                  defaultValueComputed: "B'0'"
               - column:
                   name: subscribed
                   type: bit(1)
-                  defaultValueBoolean: false
+                  defaultValueComputed: "B'0'"
               - column:
                   name: role
                   type: varchar(50)

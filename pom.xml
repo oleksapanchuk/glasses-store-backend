@@ -9,10 +9,10 @@
         <relativePath/>
     </parent>
     <groupId>com.oleksa</groupId>
-    <artifactId>spring-boot-ecommerce</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>spring-boot-ecommerce</name>
-    <description>Spring Boot Ecommerce Project</description>
+    <artifactId>panorama</artifactId>
+    <version>0.0.1</version>
+    <name>panorama</name>
+    <description>Panorama Backend Service</description>
     <properties>
         <java.version>21</java.version>
     </properties>
@@ -23,12 +23,10 @@
             <artifactId>stripe-java</artifactId>
             <version>20.80.0</version>
         </dependency>
-
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
@@ -48,8 +46,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -62,8 +60,6 @@
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
 
-
-        <!-- JWT Library -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
@@ -106,6 +102,12 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <image>
+                        <env>
+                            <BP_JVM_VERSION>${java.version}</BP_JVM_VERSION>
+                        </env>
+                        <name>oleksapanchuk/${project.artifactId}:v1</name>
+                    </image>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>

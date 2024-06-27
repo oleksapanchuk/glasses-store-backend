@@ -33,7 +33,7 @@ databaseChangeLog:
               - column:
                   name: available
                   type: bit(1)
-                  defaultValueBoolean: true
+                  defaultValueComputed: "B'1'"
               - column:
                   name: date_created
                   type: datetime(6)

@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: postgres:13.3
+    container_name: postgresdb
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=1111
+      - POSTGRES_DB=panorama-shop
+    networks:
+      - panorama_network
+
+  panorama:
+    image: "oleksapanchuk/panorama:v3"
+    container_name: panorama-service
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_APPLICATION_NAME: "panorama-service"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/panorama-shop"
+    networks:
+      - panorama_network
+
+networks:
+  panorama_network:
+    driver: bridge
